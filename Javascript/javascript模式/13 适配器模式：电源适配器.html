@@ -1,0 +1,391 @@
+<html><head><meta charset="utf-8"><title>13 适配器模式：电源适配器-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        13 适配器模式：电源适配器
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2019-07-10 14:21:23
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img2.mukewang.com/5d2448570001e29d06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">没有智慧的头脑，就像没有蜡烛的灯笼。<p class="author">——托尔斯泰</p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>适配器模式</strong>（Adapter Pattern）又称包装器模式，将一个类（对象）的接口（方法、属性）转化为用户需要的另一个接口，解决类（对象）之间接口不兼容的问题。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">主要功能是进行<strong>转换匹配</strong>，目的是复用已有的功能，而不是来实现新的接口。也就是说，访问者需要的功能应该是已经实现好了的，不需要适配器模式来实现，适配器模式主要是负责把不兼容的接口转换成访问者期望的格式而已。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文用到 ES6 的语法 <a href="http://es6.ruanyifeng.com/#docs/let">let/const</a> 、<a href="http://es6.ruanyifeng.com/#docs/class">Class</a>、<a href="http://es6.ruanyifeng.com/#docs/destructuring">解构赋值</a>、<a href="http://es6.ruanyifeng.com/#docs/function">函数参数的默认值</a> 等，如果还没接触过可以点击链接稍加学习 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="你曾见过的适配器模式" style="font-size: 30px;">1. 你曾见过的适配器模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">现实生活中我们会遇到形形色色的适配器，最常见的就是转接头了，比如不同规格电源接口的转接头、iPhone 手机的 3.5 毫米耳机插口转接头、DP/miniDP/HDMI/DVI/VGA 等视频转接头、电脑、手机、ipad 的电源适配器，都是属于适配器的范畴。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d25829700017ed704590365.png" data-original="//img.mukewang.com/5d25829700017ed704590365.png" alt="图片描述"><br>
+还有一个比较典型的翻译官场景，比如老板张三去国外谈合作，带了个翻译官李四，那么李四就是作为讲不同语言的人之间交流的适配器 ?，老板张三的话的内容含义没有变化，翻译官将老板的话转换成国外客户希望的形式。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在类似场景中，这些例子有以下特点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">旧有接口格式已经不满足现在的需要；</li>
+<li style="font-size: 20px; line-height: 38px;">通过增加适配器来更好地使用旧有接口；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="适配器模式的实现" style="font-size: 30px;">2. 适配器模式的实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以实现一下电源适配器的例子，一开始我们使用的中国插头标准：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> chinaPlug <span class="token operator">=</span> <span class="token punctuation">{</span>
+    type<span class="token punctuation">:</span> <span class="token string">'中国插头'</span><span class="token punctuation">,</span>
+    <span class="token function">chinaInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'开始供电'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+chinaPlug<span class="token punctuation">.</span><span class="token function">chinaInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 输出：开始供电</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">但是我们出国旅游了，到了日本，需要增加一个日本插头到中国插头的电源适配器，来将我们原来的电源线用起来：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> chinaPlug <span class="token operator">=</span> <span class="token punctuation">{</span>
+    type<span class="token punctuation">:</span> <span class="token string">'中国插头'</span><span class="token punctuation">,</span>
+    <span class="token function">chinaInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'开始供电'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> japanPlug <span class="token operator">=</span> <span class="token punctuation">{</span>
+    type<span class="token punctuation">:</span> <span class="token string">'日本插头'</span><span class="token punctuation">,</span>
+    <span class="token function">japanInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'开始供电'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 日本插头电源适配器 */</span>
+<span class="token keyword">function</span> <span class="token function">japanPlugAdapter</span><span class="token punctuation">(</span>plug<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token function">chinaInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> plug<span class="token punctuation">.</span><span class="token function">japanInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">japanPlugAdapter</span><span class="token punctuation">(</span>japanPlug<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">chinaInPlug</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 输出：开始供电</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">由于适配器模式的例子太简单，如果希望看更多的实战相关应用，可以看下一个小节。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">适配器模式的原理大概如下图：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d25833e0001111808570240.png" data-original="//img.mukewang.com/5d25833e0001111808570240.png" alt="图片描述"><br>
+访问者需要目标对象的某个功能，但是这个对象的接口不是自己期望的，那么通过适配器模式对现有对象的接口进行包装，来获得自己需要的接口格式。</p>
+</div><div class="cl-preview-section"><h2 id="适配器模式在实战中的应用" style="font-size: 30px;">3. 适配器模式在实战中的应用</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">适配器模式在日常开发中还是比较频繁的，其实可能你已经使用了，但却不知道原来这就是适配器模式啊。  ?</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以推而广之，适配器可以将新的软件实体适配到老的接口，也可以将老的软件实体适配到新的接口，具体如何来进行适配，可以根据具体使用场景来灵活使用。</p>
+</div><div class="cl-preview-section"><h3 id="jquery.ajax-适配-axios">3.1 jQuery.ajax 适配 Axios</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有的使用 jQuery 的老项目使用 <code>$.ajax</code> 来发送请求，现在的新项目一般使用 Axios，那么现在有个老项目的代码中全是 <code>$.ajax</code>，如果你挨个修改，那么 bug 可能就跟地鼠一样到处冒出来让你焦头烂额，这时可以采用适配器模式来将老的使用形式适配到新的技术栈上：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 适配器 */</span>
+<span class="token keyword">function</span> <span class="token function">ajax2AxiosAdapter</span><span class="token punctuation">(</span>ajaxOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">axios</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        url<span class="token punctuation">:</span> ajaxOptions<span class="token punctuation">.</span>url<span class="token punctuation">,</span>
+        method<span class="token punctuation">:</span> ajaxOptions<span class="token punctuation">.</span>type<span class="token punctuation">,</span>
+        responseType<span class="token punctuation">:</span> ajaxOptions<span class="token punctuation">.</span>dataType<span class="token punctuation">,</span>
+        data<span class="token punctuation">:</span> ajaxOptions<span class="token punctuation">.</span>data
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>ajaxOptions<span class="token punctuation">.</span>success<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>ajaxOptions<span class="token punctuation">.</span>error<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 经过适配器包装 */</span>
+$<span class="token punctuation">.</span><span class="token function-variable function">ajax</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">ajax2AxiosAdapter</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+$<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    url<span class="token punctuation">:</span> <span class="token string">'/demo-url'</span><span class="token punctuation">,</span>
+    type<span class="token punctuation">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span>
+    dataType<span class="token punctuation">:</span> <span class="token string">'json'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        name<span class="token punctuation">:</span> <span class="token string">'张三'</span><span class="token punctuation">,</span>
+        id<span class="token punctuation">:</span> <span class="token string">'2345'</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    success<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'访问成功！'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    error<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">err</span><span class="token punctuation">(</span><span class="token string">'访问失败～'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到老的代码表现形式依然不变，但是真正发送请求是通过新的发送方式来进行的。当然你也可以把 Axios 的请求适配到 <code>$.ajax</code> 上，就看你如何使用适配器了。</p>
+</div><div class="cl-preview-section"><h3 id="业务数据适配">3.2 业务数据适配</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在实际项目中，我们经常会遇到树形数据结构和表形数据结构的转换，比如全国省市区结构、公司组织结构、军队编制结构等等。以公司组织结构为例，在历史代码中，后端给了公司组织结构的树形数据，在以后的业务迭代中，会增加一些要求非树形结构的场景。比如增加了将组织维护起来的功能，因此就需要在新增组织的时候选择上级组织，在某个下拉菜单中选择这个新增组织的上级菜单。或者增加了将人员归属到某一级组织的需求，需要在某个下拉菜单中选择任一级组织。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在这些业务场景中，都需要将树形结构平铺开，但是我们又不能直接将旧有的树形结构状态进行修改，因为在项目别的地方已经使用了老的树形结构状态，这时我们可以引入适配器来将老的数据结构进行适配：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 原来的树形结构 */</span>
+<span class="token keyword">const</span> oldTreeData <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+        name<span class="token punctuation">:</span> <span class="token string">'总部'</span><span class="token punctuation">,</span>
+        place<span class="token punctuation">:</span> <span class="token string">'一楼'</span><span class="token punctuation">,</span>
+        children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'财务部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'二楼'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'生产部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'三楼'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                name<span class="token punctuation">:</span> <span class="token string">'开发部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'三楼'</span><span class="token punctuation">,</span> children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span>
+                        name<span class="token punctuation">:</span> <span class="token string">'软件部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'四楼'</span><span class="token punctuation">,</span> children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'后端部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'五楼'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'前端部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'七楼'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'技术支持部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'六楼'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+                        name<span class="token punctuation">:</span> <span class="token string">'硬件部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'四楼'</span><span class="token punctuation">,</span> children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'DSP部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'八楼'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'ARM部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'二楼'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'调试部'</span><span class="token punctuation">,</span> place<span class="token punctuation">:</span> <span class="token string">'三楼'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">]</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token comment">/* 树形结构平铺 */</span>
+<span class="token keyword">function</span> <span class="token function">treeDataAdapter</span><span class="token punctuation">(</span>treeData<span class="token punctuation">,</span> lastArrayData <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    treeData<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>item <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span>children<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">treeDataAdapter</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>children<span class="token punctuation">,</span> lastArrayData<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">const</span> <span class="token punctuation">{</span> name<span class="token punctuation">,</span> place <span class="token punctuation">}</span> <span class="token operator">=</span> item
+        lastArrayData<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token punctuation">,</span> place <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> lastArrayData
+<span class="token punctuation">}</span>
+
+<span class="token function">treeDataAdapter</span><span class="token punctuation">(</span>oldTreeData<span class="token punctuation">)</span>
+
+<span class="token comment">// 返回平铺的组织结构</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">增加适配器后，就可以将原先状态的树形结构转化为所需的结构，而并不改动原先的数据，也不对原来使用旧数据结构的代码有所影响。</p>
+</div><div class="cl-preview-section"><h3 id="vue-计算属性">3.3 Vue 计算属性</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Vue 中的计算属性也是一个适配器模式的实例，以官网的例子为例，我们可以一起来理解一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>example<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>Original message: "{{ message }}"<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>  <span class="token comment">&lt;!-- Hello --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>Computed reversed message: "{{ reversedMessage }}"<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>  <span class="token comment">&lt;!-- olleH --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>text/javascript<span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+    <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+        name<span class="token punctuation">:</span> <span class="token string">'demo'</span><span class="token punctuation">,</span>
+        <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token punctuation">{</span>
+                message<span class="token punctuation">:</span> <span class="token string">'Hello'</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        computed<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            reversedMessage<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">旧有 data 中的数据不满足当前的要求，通过计算属性的规则来适配成我们需要的格式，对原有数据并没有改变，只改变了原有数据的表现形式。</p>
+</div><div class="cl-preview-section"><h2 id="源码中的适配器模式" style="font-size: 30px;">4. 源码中的适配器模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">Axios 是比较热门的网络请求库，在浏览器中使用的时候，Axios 的用来发送请求的 <code>adapter</code> 本质上是封装浏览器提供的 API <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a>，我们可以看看源码中是如何封装这个 API 的，为了方便观看，进行了一些省略：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">xhrAdapter</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">dispatchXhrRequest</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> requestData <span class="token operator">=</span> config<span class="token punctuation">.</span>data
+        <span class="token keyword">var</span> requestHeaders <span class="token operator">=</span> config<span class="token punctuation">.</span>headers
+        
+        <span class="token keyword">var</span> request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        
+        <span class="token comment">// 初始化一个请求</span>
+        request<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>method<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token function">buildURL</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>url<span class="token punctuation">,</span> config<span class="token punctuation">.</span>params<span class="token punctuation">,</span> config<span class="token punctuation">.</span>paramsSerializer<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+        
+        <span class="token comment">// 设置最大超时时间</span>
+        request<span class="token punctuation">.</span>timeout <span class="token operator">=</span> config<span class="token punctuation">.</span>timeout
+        
+        <span class="token comment">// readyState 属性发生变化时的回调</span>
+        request<span class="token punctuation">.</span><span class="token function-variable function">onreadystatechange</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">handleLoad</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 浏览器请求退出时的回调</span>
+        request<span class="token punctuation">.</span><span class="token function-variable function">onabort</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">handleAbort</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 当请求报错时的回调</span>
+        request<span class="token punctuation">.</span><span class="token function-variable function">onerror</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">handleError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 当请求超时调用的回调</span>
+        request<span class="token punctuation">.</span><span class="token function-variable function">ontimeout</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">handleTimeout</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 设置HTTP请求头的值</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'setRequestHeader'</span> <span class="token keyword">in</span> request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            request<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 跨域的请求是否应该使用证书</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>config<span class="token punctuation">.</span>withCredentials<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            request<span class="token punctuation">.</span>withCredentials <span class="token operator">=</span> <span class="token boolean">true</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 响应类型</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>config<span class="token punctuation">.</span>responseType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            request<span class="token punctuation">.</span>responseType <span class="token operator">=</span> config<span class="token punctuation">.</span>responseType
+        <span class="token punctuation">}</span>
+        
+        <span class="token comment">// 发送请求</span>
+        request<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>requestData<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到这个模块主要是对请求头、请求配置和一些回调的设置，并没有对原生的 API 有改动，所以也可以在其他地方正常使用。这个适配器可以看作是对 <code>XMLHttpRequest</code> 的适配，是用户对 Axios 调用层到原生 <code>XMLHttpRequest</code> 这个 API 之间的适配层。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">源码可以参见 Github 仓库： <a href="https://github.com/axios/axios/blob/v0.19.0/lib/adapters/xhr.js">axios/lib/adapters/xhr.js</a></p>
+</div><div class="cl-preview-section"><h2 id="适配器模式的优缺点" style="font-size: 30px;">5. 适配器模式的优缺点</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">适配器模式的优点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">已有的功能如果只是接口不兼容，使用适配器适配已有功能，可以使原有逻辑得到<strong>更好的复用</strong>，有助于避免大规模改写现有代码；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>可扩展性良好</strong>，在实现适配器功能的时候，可以调用自己开发的功能，从而方便地扩展系统的功能；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>灵活性好</strong>，因为适配器并没有对原有对象的功能有所影响，如果不想使用适配器了，那么直接删掉即可，不会对使用原有对象的代码有影响；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">适配器模式的缺点：会让系统变得零乱，明明调用 A，却被适配到了 B，如果系统中这样的情况很多，那么对<strong>可阅读性不太友好</strong>。如果没必要使用适配器模式的话，可以考虑重构，如果使用的话，可以考虑尽量把文档完善。</p>
+</div><div class="cl-preview-section"><h2 id="适配器模式的适用场景" style="font-size: 30px;">6. 适配器模式的适用场景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当你想用已有对象的功能，却想修改它的接口时，一般可以考虑一下是不是可以应用适配器模式。</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">如果你想要使用一个已经存在的对象，但是它的接口不满足需求，那么可以使用适配器模式，把已有的实现转换成你需要的接口；</li>
+<li style="font-size: 20px; line-height: 38px;">如果你想创建一个可以复用的对象，而且确定需要和一些不兼容的对象一起工作，这种情况可以使用适配器模式，然后需要什么就适配什么；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="其他相关模式" style="font-size: 30px;">7. 其他相关模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">适配器模式和代理模式、装饰者模式看起来比较类似，都是属于包装模式，也就是用一个对象来包装另一个对象的模式，他们之间的异同在代理模式中已经详细介绍了，这里再简单对比一下。</p>
+</div><div class="cl-preview-section"><h3 id="适配器模式与代理模式">7.1 适配器模式与代理模式</h3>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>适配器模式：</strong> 提供一个不一样的接口，由于原来的接口格式<strong>不能用了</strong>，提供新的接口以满足新场景下的需求；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>代理模式：</strong> 提供一模一样的接口，由于不能直接访问目标对象，找个代理来帮忙访问，使用者可以就像访问目标对象一样来访问代理对象；</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="适配器模式、装饰者模式与代理模式">7.2 适配器模式、装饰者模式与代理模式</h3>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>适配器模式：</strong> 功能不变，只转换了原有接口访问格式；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>装饰者模式：</strong> 扩展功能，原有功能不变且可直接使用；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>代理模式：</strong> 原有功能不变，但一般是经过限制访问的；</li>
+</ol>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/38/article/487">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            12 享元模式：驾考现场的考试车
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/38/article/489">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            14 装饰者模式：给新房子装修
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img.mukewang.com/5d5a70f40001363505400600.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课前端核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">1907081656554219</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：722466314</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=5l9EFfc" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

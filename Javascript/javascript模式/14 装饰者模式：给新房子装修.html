@@ -1,0 +1,457 @@
+<html><head><meta charset="utf-8"><title>14 装饰者模式：给新房子装修-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        14 装饰者模式：给新房子装修
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2019-08-02 16:23:46
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img4.mukewang.com/5d24499d00014b5a06400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">加紧学习，抓住中心，宁精勿杂，宁专勿多。 <p class="author">—— 周恩来</p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>装饰者模式</strong> （Decorator Pattern）又称装饰器模式，在不改变原对象的基础上，通过对其添加属性或方法来进行包装拓展，使得原有对象可以动态具有更多功能。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">本质是功能<strong>动态组合</strong>，即动态地给一个对象添加额外的职责，就增加功能角度来看，使用装饰者模式比用继承更为灵活。好处是有效地把对象的核心职责和装饰功能区分开，并且通过动态增删装饰去除目标对象中重复的装饰逻辑。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文可能用到一些编码技巧比如 <a href="https://developer.mozilla.org/zh-CN/docs/Glossary/%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F">IIFE</a>（Immediately Invoked Function Expression, 立即调用函数表达式），ES6 的语法 <a href="http://es6.ruanyifeng.com/#docs/let">let/const</a> 、<a href="http://es6.ruanyifeng.com/#docs/class">Class</a> 等，如果还没接触过可以点击链接稍加学习 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="你曾见过的装饰者模式" style="font-size: 30px;">1. 你曾见过的装饰者模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">相信大家都有过房屋装修的经历，当毛坯房建好的时候，已经可以居住了，虽然不太舒适。一般我们自己住当然不会住毛坯，因此我们还会通水电、墙壁刷漆、铺地板、家具安装、电器安装等等步骤，让房屋渐渐具有各种各样的特性，比如墙壁刷漆和铺地板之后房屋变得更加美观，有了家具居住变得更加舒适，但这些额外的装修并没有影响房屋是用来居住的这个基本功能，这就是装饰的作用。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d26b22300018dec10230512.png" data-original="//img.mukewang.com/5d26b22300018dec10230512.png" alt="图片描述"><br>
+再比如现在我们经常喝的奶茶，除了奶茶之外，还可以添加珍珠、波霸、椰果、仙草、香芋等等辅料，辅料的添加对奶茶的饮用并无影响，奶茶喝起来还是奶茶的味道，只不过辅料的添加让这杯奶茶的口感变得更多样化。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">生活中类似的场景还有很多，比如去咖啡厅喝咖啡，点了杯摩卡之后我们还可以选择添加糖、冰块、牛奶等等调味品，给咖啡添加特别的口感和风味，但这些调味品的添加并没有影响咖啡的基本性质，不会因为添加了调味品，咖啡就变成奶茶。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在类似场景中，这些例子有以下特点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">装饰不影响原有的功能，原有功能可以照常使用；</li>
+<li style="font-size: 20px; line-height: 38px;">装饰可以增加多个，共同给目标对象添加额外功能；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="实例的代码实现" style="font-size: 30px;">2. 实例的代码实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以使用 JavaScript 来将装修房子的例子实现一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 毛坯房 - 目标对象 */</span>
+<span class="token keyword">function</span> <span class="token function">OriginHouse</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+OriginHouse<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getDesc</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'毛坯房'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 搬入家具 - 装饰者 */</span>
+<span class="token keyword">function</span> <span class="token function">Furniture</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>house <span class="token operator">=</span> house
+<span class="token punctuation">}</span>
+
+Furniture<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getDesc</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>house<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'搬入家具'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 墙壁刷漆 - 装饰者 */</span>
+<span class="token keyword">function</span> <span class="token function">Painting</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>house <span class="token operator">=</span> house
+<span class="token punctuation">}</span>
+
+Painting<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getDesc</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>house<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'墙壁刷漆'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> house <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OriginHouse</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+house <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Furniture</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span>
+house <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Painting</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span>
+
+house<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 输出： 毛坯房  搬入家具  墙壁刷漆</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 ES6 的 Class 语法：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 毛坯房 - 目标对象 */</span>
+<span class="token keyword">class</span> <span class="token class-name">OriginHouse</span> <span class="token punctuation">{</span>
+    <span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'毛坯房'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 搬入家具 - 装饰者 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Furniture</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>house <span class="token operator">=</span> house
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>house<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'搬入家具'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 墙壁刷漆 - 装饰者 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Painting</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>house <span class="token operator">=</span> house
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>house<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'墙壁刷漆'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> house <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OriginHouse</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+house <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Furniture</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span>
+house <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Painting</span><span class="token punctuation">(</span>house<span class="token punctuation">)</span>
+
+house<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 输出： 毛坯房  搬入家具  墙壁刷漆</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">是不是感觉很麻烦，装饰个功能这么复杂？我们 JSer 大可不必走这一套面向对象花里胡哨的，毕竟 JavaScript 的优点就是灵活：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 毛坯房 - 目标对象 */</span>
+<span class="token keyword">var</span> originHouse <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'毛坯房 '</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 搬入家具 - 装饰者 */</span>
+<span class="token keyword">function</span> <span class="token function">furniture</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'搬入家具 '</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 墙壁刷漆 - 装饰者 */</span>
+<span class="token keyword">function</span> <span class="token function">painting</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'墙壁刷漆 '</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 添加装饰 - 搬入家具 */</span>
+originHouse<span class="token punctuation">.</span><span class="token function-variable function">getDesc</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> getDesc <span class="token operator">=</span> originHouse<span class="token punctuation">.</span>getDesc
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">furniture</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">/* 添加装饰 - 墙壁刷漆 */</span>
+originHouse<span class="token punctuation">.</span><span class="token function-variable function">getDesc</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> getDesc <span class="token operator">=</span> originHouse<span class="token punctuation">.</span>getDesc
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">painting</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+originHouse<span class="token punctuation">.</span><span class="token function">getDesc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 输出： 毛坯房  搬入家具  墙壁刷漆</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简洁明了，且更符合前端日常使用的场景。</p>
+</div><div class="cl-preview-section"><h2 id="装饰者模式的原理" style="font-size: 30px;">3. 装饰者模式的原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">装饰者模式的原理如下图：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d26b2940001111603880562.png" data-original="//img.mukewang.com/5d26b2940001111603880562.png" alt="图片描述"><br>
+可以从上图看出，在表现形式上，装饰者模式和适配器模式比较类似，都属于包装模式。在装饰者模式中，一个对象被另一个对象包装起来，形成一条包装链，并增加了原先对象的功能。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">值得注意的是：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">EcmaScript 标准中的 Decorator <a href="https://github.com/tc39/proposal-decorators">提案</a>仍然在 stage-2 且极其不稳定。过去一年内已经经历了两次彻底大改，且和 TS 现有的实现已经完全脱节。</p>
+<p style="font-size: 20px; line-height: 38px;">— <a href="https://zhuanlan.zhihu.com/p/68477600"></a> 尤雨溪 2019.6.12</p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">因此本文并没有对 JavaScript 的装饰器 Decorator 进行相关介绍。</p>
+</div><div class="cl-preview-section"><h2 id="实战中的装饰者模式" style="font-size: 30px;">4. 实战中的装饰者模式</h2>
+</div><div class="cl-preview-section"><h3 id="给浏览器事件添加新功能">4.1 给浏览器事件添加新功能</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">之前介绍的添加装饰器函数的方式，经常被用来给原有浏览器或 DOM 绑定事件上绑定新的功能，比如在 <code>onload</code> 上增加新的事件，或在原来的事件绑定函数上增加新的功能，或者在原本的操作上增加用户行为埋点：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">window<span class="token punctuation">.</span><span class="token function-variable function">onload</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'原先的 onload 事件 '</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 发送埋点信息 */</span>
+<span class="token keyword">function</span> <span class="token function">sendUserOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'埋点：用户当前行为路径为 ...'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 将新的功能添加到 onload 事件上 */</span>
+window<span class="token punctuation">.</span><span class="token function-variable function">onload</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> originOnload <span class="token operator">=</span> window<span class="token punctuation">.</span>onload
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        originOnload <span class="token operator">&amp;&amp;</span> <span class="token function">originOnload</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">sendUserOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 输出： 原先的 onload 事件</span>
+<span class="token comment">// 输出： 埋点：用户当前行为路径为 ...</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到通过添加装饰函数，为 <code>onload</code> 事件回调增加新的方法，且并不影响原本的功能，我们可以把上面的方法提取出来作为一个工具方法：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">window<span class="token punctuation">.</span><span class="token function-variable function">onload</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'原先的 onload 事件 '</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 发送埋点信息 */</span>
+<span class="token keyword">function</span> <span class="token function">sendUserOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'埋点：用户当前行为路径为 ...'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 给原生事件添加新的装饰方法 */</span>
+<span class="token keyword">function</span> <span class="token function">originDecorateFn</span><span class="token punctuation">(</span>originObj<span class="token punctuation">,</span> originKey<span class="token punctuation">,</span> fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    originObj<span class="token punctuation">[</span>originKey<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> originFn <span class="token operator">=</span> originObj<span class="token punctuation">[</span>originKey<span class="token punctuation">]</span>
+        <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            originFn <span class="token operator">&amp;&amp;</span> <span class="token function">originFn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 添加装饰功能</span>
+<span class="token function">originDecorateFn</span><span class="token punctuation">(</span>window<span class="token punctuation">,</span> <span class="token string">'onload'</span><span class="token punctuation">,</span> sendUserOperation<span class="token punctuation">)</span>
+
+<span class="token comment">// 输出： 原先的 onload 事件</span>
+<span class="token comment">// 输出： 埋点：用户当前行为路径为 ...</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">代码和预览参见： <a href="https://codepen.io/SHERlocked93/pen/LwjBZw">Codepen -给浏览器事件添加新功能</a></p>
+</div><div class="cl-preview-section"><h3 id="typescript-中的装饰器">4.2 TypeScript 中的装饰器</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">现在的越来越多的前端项目或 Node 项目都在拥抱 JavaScript 的超集语言 TypeScript，如果你了解过 C# 中的特性 Attribute、Java 中的注解 Annotation、Python 中的装饰器 Decorator，那么你就不会对 TypeScript 中的装饰器感到陌生，下面我们简单介绍一下 TypeScript 中的装饰器。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">TypeScript 中的装饰器可以被附加到类声明、方法、访问符、属性和参数上，装饰器的类型有参数装饰器、方法装饰器、访问器或参数装饰器、参数装饰器。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">TypeScript 中的装饰器使用 <code>@expression</code> 这种形式，<code>expression</code> 求值后为一个函数，它在运行时被调用，被装饰的声明信息会被做为参数传入。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">多个装饰器应用使用在同一个声明上时：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">由上至下依次对装饰器表达式求值；</li>
+<li style="font-size: 20px; line-height: 38px;">求值的结果会被当成函数，<strong>由下至上</strong>依次调用；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">那么使用官网的一个例子：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"f(): evaluated"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>target<span class="token punctuation">,</span> propertyKey<span class="token punctuation">:</span> string<span class="token punctuation">,</span> descriptor<span class="token punctuation">:</span> PropertyDescriptor<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"f(): called"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"g(): evaluated"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>target<span class="token punctuation">,</span> propertyKey<span class="token punctuation">:</span> string<span class="token punctuation">,</span> descriptor<span class="token punctuation">:</span> PropertyDescriptor<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"g(): called"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">C</span> <span class="token punctuation">{</span>
+    @<span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    @<span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">method</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// f(): evaluated</span>
+<span class="token comment">// g(): evaluated</span>
+<span class="token comment">// g(): called</span>
+<span class="token comment">// f(): called</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到上面的代码中，高阶函数 <code>f</code> 与 <code>g</code> 返回了另一个函数（装饰器函数），所以 <code>f</code>、<code>g</code> 这里又被称为装饰器工厂，即帮助用户传递可供装饰器使用的参数的工厂。另外注意，演算的顺序是从下到上，执行的时候是从下到上的。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">再比如下面一个场景</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">class</span> <span class="token class-name">Greeter</span> <span class="token punctuation">{</span>
+    greeting<span class="token punctuation">:</span> string<span class="token punctuation">;</span>
+    
+    <span class="token function">constructor</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> string<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>greeting <span class="token operator">=</span> message<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">greet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Hello, "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>greeting<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> <span class="token keyword">new</span> <span class="token class-name">Greeter</span><span class="token punctuation">(</span><span class="token string">'Jim'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 输出： greeting  greet</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果我们不希望 <code>greet</code> 被 <code>for-in</code> 循环遍历出来，可以通过装饰器的方式来方便地修改属性的属性描述符：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">function</span> <span class="token function">enumerable</span><span class="token punctuation">(</span>value<span class="token punctuation">:</span> boolean<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>target<span class="token punctuation">:</span> any<span class="token punctuation">,</span> propertyKey<span class="token punctuation">:</span> string<span class="token punctuation">,</span> descriptor<span class="token punctuation">:</span> PropertyDescriptor<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        descriptor<span class="token punctuation">.</span>enumerable <span class="token operator">=</span> value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Greeter</span> <span class="token punctuation">{</span>
+    greeting<span class="token punctuation">:</span> string<span class="token punctuation">;</span>
+    
+    <span class="token function">constructor</span><span class="token punctuation">(</span>message<span class="token punctuation">:</span> string<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>greeting <span class="token operator">=</span> message<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    @<span class="token function">enumerable</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token function">greet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"Hello, "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>greeting<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> <span class="token keyword">new</span> <span class="token class-name">Greeter</span><span class="token punctuation">(</span><span class="token string">'Jim'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 输出： greeting</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这样 <code>greet</code> 就变成不可枚举了，使用起来比较方便，对其他属性进行声明不可枚举的时候也只用在之前加一行 <code>@enumerable(false)</code> 即可，不用大费周章的 <code>Object.defineProperty(...)</code> 进行繁琐的声明了。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">TypeScript 的装饰器还有很多有用的用法，感兴趣的同学可以阅读一下 TypeScript 的 Decorators <a href="https://www.typescriptlang.org/docs/handbook/decorators.html">官网文档</a> 相关内容。</p>
+</div><div class="cl-preview-section"><h2 id="装饰者模式的优缺点" style="font-size: 30px;">5. 装饰者模式的优缺点</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">装饰者模式的优点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">我们经常使用继承的方式来实现功能的扩展，但这样会给系统中带来很多的子类和复杂的继承关系，装饰者模式允许用户在不引起子类数量暴增的前提下动态地修饰对象，添加功能，<strong>装饰者和被装饰者之间松耦合</strong>，可维护性好；</li>
+<li style="font-size: 20px; line-height: 38px;">被装饰者可以使用装饰者<strong>动态地增加和撤销功能</strong>，可以在运行时选择不同的装饰器，实现不同的功能，灵活性好；</li>
+<li style="font-size: 20px; line-height: 38px;">装饰者模式把一系列复杂的功能分散到每个装饰器当中，一般一个装饰器只实现一个功能，可以给一个对象增加多个同样的装饰器，也可以把一个装饰器用来装饰不同的对象，<strong>有利于装饰器功能的复用</strong>；</li>
+<li style="font-size: 20px; line-height: 38px;">可以通过选择不同的装饰者的组合，<strong>创造不同行为和功能的结合体</strong>，原有对象的代码无须改变，就可以使得原有对象的功能变得更强大和更多样化，符合开闭原则；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">装饰者模式的缺点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">使用装饰者模式时会产生很多细粒度的装饰者对象，这些装饰者对象由于接口和功能的多样化导致系统复杂度增加，功能越复杂，需要的细粒度对象越多；</li>
+<li style="font-size: 20px; line-height: 38px;">由于更大的灵活性，也就更容易出错，特别是对于多级装饰的场景，错误定位会更加繁琐；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="装饰者模式的适用场景" style="font-size: 30px;">6. 装饰者模式的适用场景</h2>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">如果不希望系统中增加很多子类，那么可以考虑使用装饰者模式；</li>
+<li style="font-size: 20px; line-height: 38px;">需要通过对现有的一组基本功能进行排列组合而产生非常多的功能时，采用继承关系很难实现，这时采用装饰者模式可以很好实现；</li>
+<li style="font-size: 20px; line-height: 38px;">当对象的功能要求可以动态地添加，也可以动态地撤销，可以考虑使用装饰者模式；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="其他相关模式" style="font-size: 30px;">7. 其他相关模式</h2>
+</div><div class="cl-preview-section"><h3 id="装饰者模式与适配器模式">7.1 装饰者模式与适配器模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">装饰者模式和适配器模式都是属于包装模式，然而他们的意图有些不一样：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>装饰者模式：</strong> 扩展功能，原有功能还可以直接使用，一般可以给目标对象多次叠加使用多个装饰者；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>适配器模式：</strong> 功能不变，但是转换了原有接口的访问格式，一般只给目标对象使用一次；</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="装饰者模式与组合模式">7.2 装饰者模式与组合模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这两个模式有相似之处，都涉及到对象的递归调用，从某个角度来说，可以把装饰者模式看做是只有一个组件的组合模式。</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>装饰者模式：</strong> 动态地给对象增加功能；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>组合模式：</strong> 管理组合对象和叶子对象，为它们提供一致的操作接口给客户端，方便客户端的使用；</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="装饰者模式与策略模式">7.3 装饰者模式与策略模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">装饰者模式和策略模式都包含有许多细粒度的功能模块，但是他们的使用思路不同：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>装饰者模式：</strong> 可以递归调用，使用多个功能模式，功能之间可以叠加组合使用；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>策略模式：</strong> 只有一层选择，选择某一个功能；</li>
+</ol>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/38/article/488">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            13 适配器模式：电源适配器
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/38/article/490">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            15 外观模式：遥控无人机
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.mukewang.com/5d5a70f40001363505400600.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课前端核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">1907081656554219</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：722466314</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=5l9EFfc" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

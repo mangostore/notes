@@ -1,0 +1,394 @@
+<html><head><meta charset="utf-8"><title>02 this、new、bind、call、apply-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+<div class="container clearfix" id="top" style="display: block; width: 1134px;">
+    
+    <div class="center_con js-center_con l" style="width: 1134px;">
+        <div class="article-con">
+                            <!-- 买过的阅读 -->
+                <div class="map">
+                    <a href="/read" target="_blank"><i class="imv2-feather-o"></i></a>
+                    <a href="/read/38" target="_blank">JavaScript 设计模式精讲</a>
+                    <a href="" target="_blank">
+                        <span>
+                            / 1-2 02 this、new、bind、call、apply
+                        </span>
+                    </a>
+                </div>
+
+            
+
+
+            <div class="art-title" style="margin-top: 0px;">
+                02 this、new、bind、call、apply
+            </div>
+            <div class="art-info">
+                
+                <span>
+                    更新时间：2019-06-25 15:06:16
+                </span>
+            </div>
+            <div class="art-top">
+                                <img src="https://img.mukewang.com/5d0af9b70001c08606400359.jpg" alt="">
+                                                <div class="famous-word-box">
+                    <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                    <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                    <div class="famous-word">不想当将军的士兵，不是好士兵。<p class="author">——拿破仑</p></div>
+                </div>
+                            </div>
+            <div class="art-content js-lookimg">
+                <div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">虽然标题是 <code>this</code>、<code>new</code>、<code>bind</code>、<code>call</code>、<code>apply</code>，但实际上这些都离不开 <code>this</code>，因此本文将着重讨论 <code>this</code>，在此过程中分别讲解其他知识点。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文属于基础篇，如果你已经对本文相关知识点已经很了解了，那么可以跳过本文。如果你不够了解，或者了解的还不完整，那么可以通过本文来复习一下 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="this-指向的类型" style="font-size: 30px;">1. this 指向的类型</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">刚开始学习 JavaScript 的时候，<code>this</code> 总是最能让人迷惑，下面我们一起看一下在 JavaScript 中应该如何确定 <code>this</code> 的指向。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>this</code> 是在函数被调用时确定的，它的指向<strong>完全取决于函数调用的地方，而不是它被声明的地方</strong>（除箭头函数外）。当一个函数被调用时，会创建一个执行上下文，它包含函数在哪里被调用（调用栈）、函数的调用方式、传入的参数等信息，<code>this</code> 就是这个记录的一个属性，它会在函数执行的过程中被用到。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>this</code> 在函数的指向有以下几种场景：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">作为构造函数被 <code>new</code> 调用；</li>
+<li style="font-size: 20px; line-height: 38px;">作为对象的方法使用；</li>
+<li style="font-size: 20px; line-height: 38px;">作为函数直接调用；</li>
+<li style="font-size: 20px; line-height: 38px;">被 <code>call</code>、<code>apply</code>、<code>bind</code> 调用；</li>
+<li style="font-size: 20px; line-height: 38px;">箭头函数中的 <code>this</code>；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面我们分别来讨论一下这些场景中 <code>this</code> 的指向。</p>
+</div><div class="cl-preview-section"><h3 id="new-绑定">1.1 new 绑定</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">函数如果作为构造函数使用 <code>new</code> 调用时， <code>this</code> 绑定的是新创建的构造函数的实例。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">function</span> <span class="token function">Foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> bar <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// 输出: Foo 实例，this 就是 bar</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">实际上使用 <code>new</code> 调用构造函数时，会依次执行下面的操作：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">创建一个新对象；</li>
+<li style="font-size: 20px; line-height: 38px;">构造函数的 <code>prototype</code> 被赋值给这个新对象的 <code>__proto__</code>；</li>
+<li style="font-size: 20px; line-height: 38px;">将新对象赋给当前的 <code>this</code>；</li>
+<li style="font-size: 20px; line-height: 38px;">执行构造函数；</li>
+<li style="font-size: 20px; line-height: 38px;">如果函数没有返回其他对象，那么 <code>new</code> 表达式中的函数调用会自动返回这个新对象，如果返回的不是对象将被忽略；</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="显式绑定">1.2 显式绑定</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过 <code>call</code>、<code>apply</code>、<code>bind</code> 我们可以修改函数绑定的 <code>this</code>，使其成为我们指定的对象。通过这些方法的第一个参数我们可以显式地绑定 <code>this</code>。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name
+    <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token operator">=</span> price
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">Food</span><span class="token punctuation">(</span>category<span class="token punctuation">,</span> name<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    foo<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> name<span class="token punctuation">,</span> price<span class="token punctuation">)</span>       <span class="token comment">// call 方式调用</span>
+    <span class="token comment">// foo.apply(this, [name, price])    // apply 方式调用</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>category <span class="token operator">=</span> category
+<span class="token punctuation">}</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Food</span><span class="token punctuation">(</span><span class="token string">'食品'</span><span class="token punctuation">,</span> <span class="token string">'汉堡'</span><span class="token punctuation">,</span> <span class="token string">'5块钱'</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 浏览器中输出: {name: "汉堡", price: "5块钱", category: "食品"}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>call</code> 和 <code>apply</code> 的区别是 <code>call</code> 方法接受的是参数列表，而 <code>apply</code> 方法接受的是一个参数数组。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">func<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">,</span> arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">)</span>        <span class="token comment">// call 用法</span>
+func<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">,</span> <span class="token punctuation">[</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">]</span><span class="token punctuation">)</span>     <span class="token comment">// apply 用法</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">而 <code>bind</code> 方法是设置 <code>this</code> 为给定的值，并返回一个新的函数，且在调用新函数时，将给定参数列表作为原函数的参数序列的前若干项。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">func<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">[</span><span class="token punctuation">,</span> arg1<span class="token punctuation">[</span><span class="token punctuation">,</span> arg2<span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>    <span class="token comment">// bind 用法</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">举个例子：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> food <span class="token operator">=</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">'汉堡'</span><span class="token punctuation">,</span>
+    price<span class="token punctuation">:</span> <span class="token string">'5块钱'</span><span class="token punctuation">,</span>
+    getPrice<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>place<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>place <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+food<span class="token punctuation">.</span><span class="token function">getPrice</span><span class="token punctuation">(</span><span class="token string">'KFC '</span><span class="token punctuation">)</span>   <span class="token comment">// 浏览器中输出: "KFC 5块钱"</span>
+
+<span class="token keyword">var</span> getPrice1 <span class="token operator">=</span> food<span class="token punctuation">.</span>getPrice<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'鸡腿'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token string">'7块钱'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">'肯打鸡 '</span><span class="token punctuation">)</span>
+<span class="token function">getPrice1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// 浏览器中输出: "肯打鸡 7块钱"</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">关于 <code>bind</code> 的原理，我们可以使用 <code>apply</code> 方法自己实现一个 <code>bind</code> 看一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// ES5 方式</span>
+Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">bind</span> <span class="token operator">=</span> Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>bind <span class="token operator">||</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span>
+    <span class="token keyword">var</span> rest1 <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+    <span class="token keyword">var</span> context <span class="token operator">=</span> rest1<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> rest2 <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> rest1<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>rest2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ES6 方式</span>
+Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">bind</span> <span class="token operator">=</span> Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>bind <span class="token operator">||</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>rest1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> self <span class="token operator">=</span> <span class="token keyword">this</span>
+    <span class="token keyword">const</span> context <span class="token operator">=</span> rest1<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>rest2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">...</span>rest1<span class="token punctuation">,</span> <span class="token operator">...</span>rest2<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ES6 方式用了一些 ES6 的知识比如 <code>rest</code> 参数、数组解构，感兴趣的话可以看看后面的文章 &lt;基础篇：ES6 中可能遇到的知识点&gt; 中的详细介绍。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 如果你把 <code>null</code> 或 <code>undefined</code> 作为 <code>this</code> 的绑定对象传入 <code>call</code>、<code>apply</code>、<code>bind</code>，这些值在调用时会被忽略，实际应用的是默认绑定规则。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+foo<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>         <span class="token comment">// 浏览器中输出: "hello"</span>
+</code></pre>
+</div><div class="cl-preview-section"><h3 id="隐式绑定">1.3 隐式绑定</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">函数是否在某个上下文对象中调用，如果是的话 <code>this</code> 绑定的是那个上下文对象。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token string">'world'</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+obj<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// 浏览器中输出: "world"</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上面代码中，<code>foo</code> 方法是作为对象的属性调用的，那么此时 <code>foo</code> 方法执行时，<code>this</code> 指向 <code>obj</code> 对象。也就是说，此时 <code>this</code> 指向调用这个方法的对象，如果嵌套了多个对象，那么指向<strong>最后一个</strong>调用这个方法的对象：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token string">'world'</span><span class="token punctuation">,</span>
+    b<span class="token punctuation">:</span><span class="token punctuation">{</span>
+        a<span class="token punctuation">:</span><span class="token string">'China'</span><span class="token punctuation">,</span>
+        foo<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+obj<span class="token punctuation">.</span>b<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>      <span class="token comment">// 浏览器中输出: "China"</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">最后一个对象是 <code>obj</code> 上的 <code>b</code>，那么此时 <code>foo</code> 方法执行时，其中的 <code>this</code> 指向的就是 <code>b</code> 对象。</p>
+</div><div class="cl-preview-section"><h3 id="默认绑定">1.4 默认绑定</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">函数独立调用，直接使用不带任何修饰的函数引用进行调用，也是上面几种绑定途径之外的方式。非严格模式下 <code>this</code> 绑定到全局对象（浏览器下是 <code>winodw</code>，node 环境是 <code>global</code>），严格模式下 <code>this</code> 绑定到 <code>undefined</code> （因为严格模式不允许 <code>this</code> 指向全局对象）。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'world'</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>             <span class="token comment">// 相当于执行 window.foo()</span>
+
+<span class="token comment">// 浏览器中输出: "hello"</span>
+<span class="token comment">// 浏览器中输出: Window 对象</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上面代码中，变量 <code>a</code> 被声明在全局作用域，成为全局对象 <code>window</code> 的一个同名属性。函数 <code>foo</code> 被执行时，<code>this</code> 此时指向的是全局对象，因此打印出来的 <code>a</code> 是全局对象的属性。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意有一种情况：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token string">'world'</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> bar <span class="token operator">=</span> obj<span class="token punctuation">.</span>foo
+
+<span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment">// 浏览器中输出: "hello"</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">此时 <code>bar</code> 函数，也就是 <code>obj</code> 上的 <code>foo</code> 方法为什么又指向了全局对象呢，是因为 <code>bar</code> 方法此时是作为函数独立调用的，所以此时的场景属于默认绑定，而不是隐式绑定。这种情况和把方法作为回调函数的场景类似：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token string">'world'</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">func</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">func</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>foo<span class="token punctuation">)</span>              <span class="token comment">// 浏览器中输出: "hello"</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">参数传递实际上也是一种隐式的赋值，只不过这里 <code>obj.foo</code> 方法是被隐式赋值给了函数 <code>func</code> 的形参 <code>fn</code>，而之前的情景是自己赋值，两种情景实际上类似。这种场景我们遇到的比较多的是 <code>setTimeout</code> 和 <code>setInterval</code>，如果回调函数不是箭头函数，那么其中的 <code>this</code> 指向的就是全局对象.</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">其实我们可以把默认绑定当作是隐式绑定的特殊情况，比如上面的 <code>bar()</code>，我们可以当作是使用 <code>window.bar()</code> 的方式调用的，此时 <code>bar</code> 中的 <code>this</code> 根据隐式绑定的情景指向的就是 <code>window</code>。</p>
+</div><div class="cl-preview-section"><h2 id="this-绑定的优先级" style="font-size: 30px;">2. this 绑定的优先级</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>this</code> 存在多个使用场景，那么多个场景同时出现的时候，<code>this</code> 到底应该如何指向呢。这里存在一个优先级的概念，<code>this</code> 根据优先级来确定指向。优先级：<strong>new 绑定 &gt; 显示绑定 &gt; 隐式绑定 &gt; 默认绑定</strong></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">所以 <code>this</code> 的判断顺序：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>new 绑定：</strong> 函数是否在 <code>new</code> 中调用？如果是的话 <code>this</code> 绑定的是新创建的对象；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>显式绑定：</strong> 函数是否是通过 <code>bind</code>、<code>call</code>、<code>apply</code> 调用？如果是的话，<code>this</code> 绑定的是指定的对象；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>隐式绑定：</strong> 函数是否在某个上下文对象中调用？如果是的话，<code>this</code> 绑定的是那个上下文对象；</li>
+<li style="font-size: 20px; line-height: 38px;">如果都不是的话，使用默认绑定。如果在严格模式下，就绑定到 <code>undefined</code>，否则绑定到全局对象；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="箭头函数中的-this" style="font-size: 30px;">3. 箭头函数中的 this</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>箭头函数</strong> 是根据其声明的地方来决定 <code>this</code> 的，它是 ES6 中出现的知识点，在后文 &lt;基础篇：ES6 中可能遇到的知识点&gt; 中会有更详细讲解。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">箭头函数的 <code>this</code> 绑定是无法通过 <code>call</code>、<code>apply</code>、<code>bind</code> 被修改的，且因为箭头函数没有构造函数 <code>constructor</code>，所以也不可以使用 <code>new</code> 调用，即不能作为构造函数，否则会报错。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token string">'hello'</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token string">'world'</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+obj<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>             <span class="token comment">// 浏览器中输出: "hello"</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以看看 ECMAScript 标准中对箭头函数的描述：</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>原文：</strong> An ArrowFunction does not define local bindings for arguments, super, this, or new.target. Any reference to arguments, super, this, or new.target within an ArrowFunction must resolve to a binding in a lexically enclosing environment. Typically this will be the Function Environment of an immediately enclosing function.<br>
+<strong>翻译：</strong> 箭头函数不为 <code>arguments</code>、<code>super</code>、<code>this</code> 或 <code>new.target</code> 定义本地绑定。箭头函数中对 <code>arguments</code>、<code>super</code>、<code>this</code> 或 <code>new.target</code> 的任何引用都解析为当前所在词法作用域中的绑定。通常，这是箭头函数所在的函数作用域。</p>
+<p style="font-size: 20px; line-height: 38px;">— <a href="https://tc39.github.io/ecma262/#sec-arrow-function-definitions-runtime-semantics-evaluation">ECMAScript Language Specification - Arrow Function | ECMA 标准 - 箭头函数</a></p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="一个-this-的小练习" style="font-size: 30px;">4. 一个 this 的小练习</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">用一个小练习来实战一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">20</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token number">40</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+    
+        <span class="token keyword">function</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">60</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    
+        func<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">50</span>
+        <span class="token keyword">return</span> func
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> bar <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>        <span class="token comment">// 浏览器中输出: 20</span>
+<span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                      <span class="token comment">// 浏览器中输出: 60</span>
+<span class="token keyword">new</span> <span class="token class-name">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                  <span class="token comment">// 浏览器中输出: 60</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">稍微解释一下：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><code>var a = 20</code> 这句在全局变量 window 上创建了个属性 <code>a</code> 并赋值为 20；</li>
+<li style="font-size: 20px; line-height: 38px;">首先执行的是 <code>obj.foo()</code>，这是一个箭头函数，箭头函数不创建新的函数作用域直接沿用语句外部的作用域，因此 <code>obj.foo()</code> 执行时箭头函数中 <code>this</code> 是全局 window，首先打印出 window 上的属性 <code>a</code> 的值 20，箭头函数返回了一个原型上有个值为 50 的属性 <code>a</code> 的函数对象 <code>func</code> 给 <code>bar</code>；</li>
+<li style="font-size: 20px; line-height: 38px;">继续执行的是 <code>bar()</code>，这里执行的是刚刚箭头函数返回的闭包 <code>func</code>，其内部的 <code>this</code> 指向 window，因此 <code>this.a</code> 修改了 <code>window.a</code> 的值为 60 并打印出来；</li>
+<li style="font-size: 20px; line-height: 38px;">然后执行的是 <code>new bar()</code>，根据之前的表述，new 操作符会在 <code>func</code> 函数中创建一个继承了 <code>func</code> 原型的实例对象并用 <code>this</code> 指向它，随后 <code>this.a = 60</code> 又在实例对象上创建了一个属性 <code>a</code>，在之后的打印中已经在实例上找到了属性 <code>a</code>，因此就不继续往对象原型上查找了，所以打印出第三个 60；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果把上面例子的箭头函数换成普通函数呢，结果会是什么样？</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">20</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">:</span> <span class="token number">40</span><span class="token punctuation">,</span>
+    foo<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+        
+        <span class="token keyword">function</span> <span class="token function">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">60</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>a<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        
+        func<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">50</span>
+        <span class="token keyword">return</span> func
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> bar <span class="token operator">=</span> obj<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>        <span class="token comment">// 浏览器中输出: 40</span>
+<span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                      <span class="token comment">// 浏览器中输出: 60</span>
+<span class="token keyword">new</span> <span class="token class-name">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                  <span class="token comment">// 浏览器中输出: 60</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这个例子就不详细讲解了。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果把上面两个例子弄懂原理，基本上 <code>this</code> 的指向就掌握的差不多啦~</p>
+</div><div class="cl-preview-section"><hr>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">推介阅读：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">Function.prototype.bind() - JavaScript | MDN</a></li>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/call">Function.prototype.call() - JavaScript | MDN</a></li>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">Function.prototype.apply() - JavaScript | MDN</a></li>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/this">this - JavaScript | MDN</a></li>
+</ol>
+</div></div>
+            </div>
+                            <!-- 买过的阅读 -->
+                <div class="art-next-prev clearfix">
+                                                                        <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/476">
+                                                    <div class="prev l clearfix">
+                                <div class="icon l">
+                                    <i class="imv2-arrow3_l"></i>
+                                </div>
+                                <p>
+                                    01  开篇 ｜ 为什么学习本专栏？
+                                </p>
+                            </div>
+                        </a>
+                                                                                            <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/478">
+                                                    <div class="next r clearfix">
+                                <p>
+                                    03 闭包与高阶函数
+                                </p>
+                                <div class="icon r">
+                                    <i class="imv2-arrow3_r"></i>
+                                </div>
+
+                            </div>
+                        </a>
+                                    </div>
+                    </div>
+        <div class="comments-con js-comments-con" id="coments_con">
+        </div>
+
+
+
+    </div>
+    
+    
+    
+
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

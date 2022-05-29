@@ -1,0 +1,421 @@
+<html><head><meta charset="utf-8"><title>05 继承与原型链-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+<div class="container clearfix" id="top" style="display: block; width: 1134px;">
+    
+    <div class="center_con js-center_con l" style="width: 1134px;">
+        <div class="article-con">
+                            <!-- 买过的阅读 -->
+                <div class="map">
+                    <a href="/read" target="_blank"><i class="imv2-feather-o"></i></a>
+                    <a href="/read/38" target="_blank">JavaScript 设计模式精讲</a>
+                    <a href="" target="_blank">
+                        <span>
+                            / 1-5 05 继承与原型链
+                        </span>
+                    </a>
+                </div>
+
+            
+
+
+            <div class="art-title" style="margin-top: 0px;">
+                05 继承与原型链
+            </div>
+            <div class="art-info">
+                
+                <span>
+                    更新时间：2019-06-26 15:38:06
+                </span>
+            </div>
+            <div class="art-top">
+                                <img src="https://img4.mukewang.com/5d0afa170001474f06400359.jpg" alt="">
+                                                <div class="famous-word-box">
+                    <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                    <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                    <div class="famous-word">天才就是百分之二的灵感，百分之九十八的汗水。<p class="author">——爱迪生</p></div>
+                </div>
+                            </div>
+            <div class="art-content js-lookimg">
+                <div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">JavaScript 是一种灵活的语言，兼容并包含面向对象风格、函数式风格等编程风格。我们知道面向对象风格有三大特性和六大原则，三大特性是封装、继承、多态，六大原则是单一职责原则（SRP）、开放封闭原则（OCP）、里氏替换原则（LSP）、依赖倒置原则（DIP）、接口分离原则（ISP）、最少知识原则（LKP）。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="http://img.mukewang.com/5d13206a0001067c11750727.jpg" alt="图片描述" data-original="http://img.mukewang.com/5d13206a0001067c11750727.jpg" class="" style="cursor: pointer;"><br>
+JavaScript 并不是强面向对象语言，因此它的灵活性决定了并不是所有面向对象的特征都适合 JavaScript 开发，本教程将会着重介绍三大特性中的<strong>继承</strong>，和六大原则里的<strong>单一职责原则</strong>、<strong>开放封闭原则</strong>、<strong>最少知识原则</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">本文将着重介绍一下继承相关内容，设计原则将会在后文予以介绍。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文属于基础篇，如果你已经对本文相关知识点已经很了解了，那么可以跳过本文。如果你不够了解，或者了解的还不完整，那么可以通过本文来复习一下 ~</p>
+<p style="font-size: 20px; line-height: 38px;">PS： 如果你觉得下面各种继承方式看的头晕，那么就直接看组合继承和 ES6 方式实现继承这两种方法即可～</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="原型对象链" style="font-size: 30px;">1. 原型对象链</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">JavaScript 内建的继承方法被称为原型对象链，又称为原型对象继承。对于一个对象，因为它继承了它的原型对象的属性，所以它可以访问到这些属性。同理，原型对象也是一个对象，它也有自己的原型对象，因此也可以继承它的原型对象的属性。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这就是原型继承链：<strong>对象继承其原型对象，而原型对象继承它的原型对象，以此类推。</strong></p>
+</div><div class="cl-preview-section"><h2 id="对象继承" style="font-size: 30px;">2. 对象继承</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用对象字面量形式创建对象时，会隐式指定 <code>Object.prototype</code> 为新对象的 <code>[[Prototype]]</code>。使用 <code>Object.create()</code> 方式创建对象时，可以显式指定新对象的 <code>[[Prototype]]</code>。该方法接受两个参数：第一个参数为新对象的 <code>[[Prototype]]</code>，第二个参数描述了新对象的属性，格式如在 <code>Object.defineProperties()</code> 中使用的一样。</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">// 对象字面量形式，原型被隐式地设置为 Object.prototype</span>
+<span class="token keyword">var</span> rectangle <span class="token operator">=</span> <span class="token punctuation">{</span> sizeType<span class="token punctuation">:</span> <span class="token string">'四边形'</span> <span class="token punctuation">}</span>
+
+<span class="token comment">// Object.create() 创建，显示指定为 Object.prototype， 等价于 ↑</span>
+<span class="token keyword">var</span> rectangle <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    sizeType<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        configurable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        enumerable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        value<span class="token punctuation">:</span> <span class="token string">'四边形'</span><span class="token punctuation">,</span>
+        writable<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以用这个方法来实现对象继承：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">var</span> rectangle <span class="token operator">=</span> <span class="token punctuation">{</span>
+    sizeType<span class="token punctuation">:</span> <span class="token string">'四边形'</span><span class="token punctuation">,</span>
+    getSize<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sizeType<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> square <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>rectangle<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    sizeType<span class="token punctuation">:</span> <span class="token punctuation">{</span> value<span class="token punctuation">:</span> <span class="token string">'正方形'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+rectangle<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>   <span class="token comment">// "四边形"</span>
+square<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>      <span class="token comment">// "正方形"</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>rectangle<span class="token punctuation">.</span><span class="token function">hasOwnProperty</span><span class="token punctuation">(</span><span class="token string">'getSize'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// true</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>rectangle<span class="token punctuation">.</span><span class="token function">isPrototypeOf</span><span class="token punctuation">(</span>square<span class="token punctuation">)</span><span class="token punctuation">)</span>     <span class="token comment">// true</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>square<span class="token punctuation">.</span><span class="token function">hasOwnProperty</span><span class="token punctuation">(</span><span class="token string">'getSize'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token comment">// false</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'getSize'</span> <span class="token keyword">in</span> square<span class="token punctuation">)</span>                 <span class="token comment">// true</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>square<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> rectangle<span class="token punctuation">)</span>                       <span class="token comment">// true</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>square<span class="token punctuation">.</span>__proto__<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Object<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>      <span class="token comment">// true</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="http://img.mukewang.com/5d1320a3000168b713550182.png" alt="图片描述" data-original="http://img.mukewang.com/5d1320a3000168b713550182.png" class="" style="cursor: pointer;"><br>
+对象 <code>square</code> 继承自对象 <code>rectangle</code>，也就继承了 <code>rectangle</code> 的 <code>sizeType</code> 属性和 <code>getSize()</code> 方法，又通过重写 <code>sizeType</code> 属性定义了一个自有属性，隐藏并替代了原型对象中的同名属性。所以 <code>rectangle.getSize()</code> 输出 「四边形」 而 <code>square.getSize()</code> 输出 「正方形」。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在访问一个对象的时候，JavaScript 引擎会执行一个搜索过程，如果在对象实例上发现该属性，该属性值就会被使用，如果没有发现则搜索其原型对象 <code>[[Prototype]]</code>，如果仍然没有发现，则继续搜索该原型对象的原型对象 <code>[[Prototype]]</code>，直到继承链顶端，顶端通常是一个 <code>Object.prototype</code>，其 <code>[[prototype]]</code> 为 <code>null</code>。这就是<strong>原型链</strong>的查找过程。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以通过 <code>Object.create()</code> 创建 <code>[[Prototype]]</code> 为 null 的对象：<code>var obj = Object.create(null)</code>。对象 <code>obj</code> 是一个没有原型链的对象，这意味着 <code>toString()</code> 和 <code>valueOf</code> 等存在于 Object 原型上的方法同样不存在于该对象上，通常我们将这样创建出来的对象为<strong>纯净对象</strong>。</p>
+</div><div class="cl-preview-section"><h2 id="原型链继承" style="font-size: 30px;">3. 原型链继承</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">JavaScript 中的对象继承是构造函数继承的基础，几乎所有的函数都有 <code>prototype</code> 属性（通过<code>Function.prototype.bind</code> 方法构造出来的函数是个例外），它可以被替换和修改。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">函数声明创建函数时，函数的 <code>prototype</code> 属性被自动设置为一个继承自 <code>Object.prototype</code> 的对象，该对象有个自有属性 <code>constructor</code>，其值就是函数本身。</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">// 构造函数</span>
+<span class="token keyword">function</span> <span class="token function">YourConstructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token comment">// JavaScript 引擎在背后做的：</span>
+YourConstructor<span class="token punctuation">.</span>prototype <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    constructor<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        configurable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        enumerable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        value<span class="token punctuation">:</span> YourConstructor<span class="token punctuation">,</span>
+        writable<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>YourConstructor<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Object<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>         <span class="token comment">// true</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">JavaScript 引擎帮你把构造函数的 <code>prototype</code> 属性设置为一个继承自 <code>Object.prototype</code> 的对象，这意味着我们创建出来的构造函数都继承自 <code>Object.prototype</code>。由于 <code>prototype</code> 可以被赋值和改写，所以通过改写它来改变原型链：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">/* 四边形 */</span>
+<span class="token keyword">function</span> <span class="token function">Rectangle</span><span class="token punctuation">(</span>length<span class="token punctuation">,</span> width<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> length   <span class="token comment">// 长</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token operator">=</span> width     <span class="token comment">// 宽</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取面积 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getArea</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取尺寸信息 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Rectangle: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 正方形 */</span>
+<span class="token keyword">function</span> <span class="token function">Square</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> size
+    <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token operator">=</span> size
+<span class="token punctuation">}</span>
+
+Square<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+Square<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>constructor <span class="token operator">=</span> Square   <span class="token comment">// 原本为 Rectangle，重置回 Square 构造函数</span>
+
+Square<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Square: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> rect <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> squa <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+
+rect<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Rectangle: 5x10，面积: 50</span>
+squa<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Square: 6x6，面积: 36</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="http://img.mukewang.com/5d1320d200015be613580495.png" alt="图片描述" data-original="http://img.mukewang.com/5d1320d200015be613580495.png" class="" style="cursor: pointer;"><br>
+为什么使用 <code>Square.prototype = new Rectangle()</code> 而不用 <code>Square.prototype = Rectangle.prototype</code> 呢。这是因为后者使得两个构造函数的 <code>prototype</code> 指向了同一个对象，当修改其中一个函数的 <code>prototype</code> 时，另一个函数也会受影响。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">所以 <code>Square</code> 构造函数的 <code>prototype</code> 属性被改写为了 <code>Rectagle</code> 的一个实例。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">但是仍然有问题。当一个属性只存在于构造函数的 <code>prototype</code> 上，而构造函数本身没有时，该属性会在构造函数的所有实例间共享，其中一个实例修改了该属性，其他所有实例都会受影响：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 四边形 */</span>
+<span class="token keyword">function</span> <span class="token function">Rectangle</span><span class="token punctuation">(</span>sizes<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>sizes <span class="token operator">=</span> sizes
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 正方形 */</span>
+<span class="token keyword">function</span> <span class="token function">Square</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+Square<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">var</span> squa1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// sizes: [1, 2]</span>
+
+squa1<span class="token punctuation">.</span>sizes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>       <span class="token comment">// 在 squa1 中修改了 sizes</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>squa1<span class="token punctuation">.</span>sizes<span class="token punctuation">)</span>  <span class="token comment">// sizes: [1, 2, 3]</span>
+
+<span class="token keyword">var</span> squa2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>squa2<span class="token punctuation">.</span>sizes<span class="token punctuation">)</span>  <span class="token comment">// sizes: [1, 2, 3] 应该是 [1, 2]，得到的是修改后的 sizes</span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="构造函数窃取" style="font-size: 30px;">4. 构造函数窃取</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">构造函数窃取又称构造函数借用、经典继承。这种技术的基本思想相当简单，即在子类型构造函数的内部调用父类构造函数。</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">function</span> <span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 四边形 */</span>
+<span class="token keyword">function</span> <span class="token function">Rectangle</span><span class="token punctuation">(</span>length<span class="token punctuation">,</span> width<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> length
+    <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token operator">=</span> width
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取面积 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>getArea <span class="token operator">=</span> getArea
+
+<span class="token comment">/* 获取尺寸信息 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Rectangle: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 正方形 */</span>
+<span class="token keyword">function</span> <span class="token function">Square</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Rectangle<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> size<span class="token punctuation">,</span> size<span class="token punctuation">)</span>
+    
+    <span class="token keyword">this</span><span class="token punctuation">.</span>getArea <span class="token operator">=</span> getArea
+    
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Square: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> rect <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> squa <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+
+rect<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Rectangle: 5x10，面积: 50</span>
+squa<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Square: 6x6，面积: 36</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这样的实现避免了引用类型的属性被所有实例共享的问题，在父类实例创建时还可以自定义地传参，缺点是方法都是在构造函数中定义，每次创建实例都会重新赋值一遍方法，即使方法的引用是一致的。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这种方式通过构造函数窃取来设置属性，模仿了那些基于类的语言的类继承，所以这通常被称为<strong>伪类继承</strong>或<strong>经典继承</strong>。</p>
+</div><div class="cl-preview-section"><h2 id="组合继承" style="font-size: 30px;">5. 组合继承</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">组合继承又称伪经典继承，指的是将原型链和借用构造函数的技术组合发挥二者之长的一种继承模式。其背后的思路是使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承。这样，既通过在原型上定义方法实现了函数复用，又能够保证每个实例都有它自己的属性。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 四边形 */</span>
+<span class="token keyword">function</span> <span class="token function">Rectangle</span><span class="token punctuation">(</span>length<span class="token punctuation">,</span> width<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> length
+    <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token operator">=</span> width
+    <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> <span class="token string">'red'</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取面积 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getArea</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取尺寸信息 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Rectangle: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 正方形 */</span>
+<span class="token keyword">function</span> <span class="token function">Square</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Rectangle<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> size<span class="token punctuation">,</span> size<span class="token punctuation">)</span>  <span class="token comment">// 第一次调用 Rectangle 函数</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> <span class="token string">'blue'</span>
+<span class="token punctuation">}</span>
+
+Square<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token comment">// 第二次调用 Rectangle 函数</span>
+Square<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>constructor <span class="token operator">=</span> Square
+
+Square<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Square: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> rect <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> squa <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+
+rect<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Rectangle: 5x10，面积: 50</span>
+squa<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Square: 6x6，面积: 36</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">组合继承是 JavaScript 中最常用的继承模式，但是父类构造函数被调用了两次。</p>
+</div><div class="cl-preview-section"><h2 id="寄生组合式继承" style="font-size: 30px;">6. 寄生组合式继承</h2>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 实现继承逻辑 */</span>
+<span class="token keyword">function</span> <span class="token function">inheritPrototype</span><span class="token punctuation">(</span>sub<span class="token punctuation">,</span> sup<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> prototype <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>sup<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>
+    prototype<span class="token punctuation">.</span>constructor <span class="token operator">=</span> sub
+    sub<span class="token punctuation">.</span>prototype <span class="token operator">=</span> prototype
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 四边形 */</span>
+<span class="token keyword">function</span> <span class="token function">Rectangle</span><span class="token punctuation">(</span>length<span class="token punctuation">,</span> width<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> length
+    <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token operator">=</span> width
+    <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> <span class="token string">'red'</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取面积 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getArea</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 获取尺寸信息 */</span>
+Rectangle<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Rectangle: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 正方形 */</span>
+<span class="token keyword">function</span> <span class="token function">Square</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Rectangle<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> size<span class="token punctuation">,</span> size<span class="token punctuation">)</span>  <span class="token comment">// 第一次调用 Rectangle 函数</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> <span class="token string">'blue'</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 实现继承</span>
+<span class="token function">inheritPrototype</span><span class="token punctuation">(</span>Square<span class="token punctuation">,</span> Rectangle<span class="token punctuation">)</span>
+
+Square<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getSize</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Square: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> rect <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> squa <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+
+rect<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Rectangle: 5x10，面积: 50</span>
+squa<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Square: 6x6，面积: 36</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这种方式的高效率体现它只调用了一次父类构造函数，并且因此避免了在 <code>Rectangle.prototype</code> 上面创建不必要的、多余的属性。与此同时，原型链还能保持不变。因此，还能够正常使用 <code>instanceof</code> 和 <code>isPrototypeOf</code>。开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">不过这种实现有些麻烦，推介使用<strong>组合继承</strong>和下面的 ES6 方式实现继承。</p>
+</div><div class="cl-preview-section"><h2 id="es6-的-extends-方式实现继承" style="font-size: 30px;">7. ES6 的 extends 方式实现继承</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">ES6 中引入了 <code>class</code> 关键字，class 之间可以通过 <code>extends</code> 关键字实现继承，这比 ES5 的通过修改原型链实现继承，要清晰、方便和语义化的多。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 四边形 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Rectangle</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>length<span class="token punctuation">,</span> width<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">=</span> length
+        <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token operator">=</span> width
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> <span class="token string">'red'</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 获取面积 */</span>
+    <span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 获取尺寸信息 */</span>
+    <span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Rectangle: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 正方形 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Square</span> <span class="token keyword">extends</span> <span class="token class-name">Rectangle</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>size<span class="token punctuation">,</span> size<span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> <span class="token string">'blue'</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Square: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>length <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">x</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>width <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">，面积: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getArea</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">var</span> rect <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Rectangle</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> squa <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Square</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+
+rect<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Rectangle: 5x10，面积: 50</span>
+squa<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment">// Square: 6x6，面积: 36</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">然而并不是所有浏览器都支持 class/extends 关键词，不过我们可以引入 Babel 来进行转译。class 语法实际上也是之前语法的语法糖，用户可以把上面的代码放到 <a href="https://babeljs.io/repl">Babel</a> 的在线编译中看看，编译出来是什么样子。</p>
+</div></div>
+            </div>
+                            <!-- 买过的阅读 -->
+                <div class="art-next-prev clearfix">
+                                                                        <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/479">
+                                                    <div class="prev l clearfix">
+                                <div class="icon l">
+                                    <i class="imv2-arrow3_l"></i>
+                                </div>
+                                <p>
+                                    04 ES6 中可能遇到的知识点
+                                </p>
+                            </div>
+                        </a>
+                                                                                            <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/506">
+                                                    <div class="next r clearfix">
+                                <p>
+                                    06 设计原则
+                                </p>
+                                <div class="icon r">
+                                    <i class="imv2-arrow3_r"></i>
+                                </div>
+
+                            </div>
+                        </a>
+                                    </div>
+                    </div>
+        <div class="comments-con js-comments-con" id="coments_con">
+        </div>
+
+
+
+    </div>
+    
+    
+    
+
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

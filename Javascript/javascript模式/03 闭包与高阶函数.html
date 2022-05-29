@@ -1,0 +1,364 @@
+<html><head><meta charset="utf-8"><title>03 闭包与高阶函数-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+<div class="container clearfix" id="top" style="display: block; width: 1134px;">
+    
+    <div class="center_con js-center_con l" style="width: 1134px;">
+        <div class="article-con">
+                            <!-- 未买试读 要加art-title距离上面112px-->
+                
+            
+
+
+            <div class="art-title" style="margin-top: 0px;">
+                03 闭包与高阶函数
+            </div>
+            <div class="art-info">
+                
+                <span>
+                    更新时间：2019-06-24 20:02:44
+                </span>
+            </div>
+            <div class="art-top">
+                                <img src="https://img2.mukewang.com/5d0af9d00001ee7806400359.jpg" alt="">
+                                                <div class="famous-word-box">
+                    <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                    <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                    <div class="famous-word">我要扼住命运的咽喉，它妄想使我屈服，这绝对办不到。生活是这样美好，活他一千辈子吧！<p class="author">——贝多芬</p></div>
+                </div>
+                            </div>
+            <div class="art-content js-lookimg">
+                <div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">「JavaScript 中，函数是一等公民」，在各种书籍和文章中我们总能看到这句话。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">既然有一等，那么当然也有次等了。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;">如果公民分等级，一等公民什么都可以做，次等公民这不能做那不能做。<br>
+JavaScript的函数也是对象，可以有属性，可以赋值给一个变量，可以放在数组里作为元素，可以作为其他对象的属性，什么都可以做，别的对象能做的它能做，别的对象不能做的它也能做。这不就是一等公民的地位嘛。    — <a href="https://www.zhihu.com/question/67652709/answer/257179930">程墨Morgan</a></p>
+</blockquote>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">所以它的含义是：函数和其他普通对象一样，其上有属性也有方法，普通对象能做的，函数也可以做。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">正因为在 JavaScript 中的极大自由，函数被赋予了卓越的表达力和灵活性，但是也产生了很多让人抓耳挠腮的问题。本文我们就一起讨论一下最常遇见的两个与函数密切相关的概念：闭包和高阶函数。这两个概念在之后设计模式的文章中也会经常碰见。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文属于基础篇，如果你已经对本文相关知识点已经很了解了，那么可以跳过本文。如果你不够了解，或者了解的还不完整，那么可以通过本文来复习一下 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="闭包" style="font-size: 30px;">1. 闭包</h2>
+</div><div class="cl-preview-section"><h3 id="什么是闭包">1.1 什么是闭包</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当函数可以<strong>记住并访问</strong>所在的词法作用域时，就产生了<strong>闭包</strong>，即使函数是在当前词法作用域之外执行。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们首先来看一个闭包的例子：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">2</span>
+    
+    <span class="token keyword">function</span> <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">return</span> bar
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> baz <span class="token operator">=</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token function">baz</span><span class="token punctuation">(</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 2</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>foo</code> 函数传递出了一个函数 <code>bar</code>，传递出来的 <code>bar</code> 被赋值给 <code>baz</code> 并调用，虽然这时 <code>baz</code> 是在 <code>foo</code> 作用域外执行的，但 <code>baz</code> 在调用的时候可以访问到前面的 <code>bar</code> 函数所在的 <code>foo</code> 的内部作用域。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">由于 <code>bar</code> 声明在 <code>foo</code> 函数内部，<code>bar</code> 拥有涵盖 <code>foo</code> 内部作用域的闭包，使得 <code>foo</code> 的内部作用域一直存活不被回收。一般来说，函数在执行完后其整个内部作用域都会被销毁，因为 JavaScript 的 GC（Garbage Collection）垃圾回收机制会自动回收不再使用的内存空间。但是闭包会阻止某些 GC，比如本例中 <code>foo()</code> 执行完，因为返回的 <code>bar</code> 函数依然持有其所在作用域的引用，所以其内部作用域不会被回收。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 如果不是必须使用闭包，那么尽量避免创建它，因为闭包在处理速度和内存消耗方面对性能具有负面影响。</p>
+</div><div class="cl-preview-section"><h3 id="利用闭包实现结果缓存（备忘模式）">1.2 利用闭包实现结果缓存（备忘模式）</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>备忘模式</strong>就是应用闭包的特点的一个典型应用。比如有个函数：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">多次运行 <code>add()</code> 时，每次得到的结果都是重新计算得到的，如果是开销很大的计算操作的话就比较消耗性能了，这里可以对已经计算过的输入做一个缓存。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">所以这里可以利用闭包的特点来实现一个简单的缓存，在函数内部用一个对象存储输入的参数，如果下次再输入相同的参数，那就比较一下对象的属性，如果有缓存，就直接把值从这个对象里面取出来。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 备忘函数 */</span>
+<span class="token keyword">function</span> <span class="token function">memorize</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> cache <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> args <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+        <span class="token keyword">var</span> key <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token punctuation">(</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>fn<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 复杂计算函数 */</span>
+<span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> adder <span class="token operator">=</span> <span class="token function">memorize</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span>
+
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 2    当前: cache: { '[1]': 2 }</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 2    当前: cache: { '[1]': 2 }</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 3    当前: cache: { '[1]': 2, '[2]': 3 }</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">使用 ES6 的方式会更优雅一些：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">/* 备忘函数 */</span>
+<span class="token keyword">function</span> <span class="token function">memorize</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> key <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token punctuation">(</span>cache<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>fn<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 复杂计算函数 */</span>
+<span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> adder <span class="token operator">=</span> <span class="token function">memorize</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span>
+
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 2    当前: cache: { '[1]': 2 }</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 2    当前: cache: { '[1]': 2 }</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>            <span class="token comment">// 输出: 3    当前: cache: { '[1]': 2, '[2]': 3 }</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">稍微解释一下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">备忘函数中用 <code>JSON.stringify</code> 把传给 <code>adder</code> 函数的参数序列化成字符串，把它当做 <code>cache</code> 的索引，将 <code>add</code> 函数运行的结果当做索引的值传递给 <code>cache</code>，这样 <code>adder</code> 运行的时候如果传递的参数之前传递过，那么就返回缓存好的计算结果，不用再计算了，如果传递的参数没计算过，则计算并缓存 <code>fn.apply(fn, args)</code>，再返回计算的结果。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当然这里的实现如果要实际应用的话，还需要继续改进一下，比如：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">缓存不可以永远扩张下去，这样太耗费内存资源，我们可以只缓存最新传入的 n 个；</li>
+<li style="font-size: 20px; line-height: 38px;">在浏览器中使用的时候，我们可以借助浏览器的持久化手段，来进行缓存的持久化，比如 cookie、localStorage 等；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这里的复杂计算函数可以是过去的某个状态，比如对某个目标的操作，这样把过去的状态缓存起来，方便地进行状态回退。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">复杂计算函数也可以是一个返回时间比较慢的异步操作，这样如果把结果缓存起来，下次就可以直接从本地获取，而不是重新进行异步请求。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> cache 不可以是 <code>Map</code>，因为 <code>Map</code> 的键是使用 <code>===</code> 比较的，因此当传入引用类型值作为键时，虽然它们看上去是相等的，但实际并不是，比如 <code>[1]!==[1]</code>，所以还是被存为不同的键。</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">//  X 错误示范</span>
+<span class="token keyword">function</span> <span class="token function">memorize</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>        
+  <span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> cache<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span> <span class="token operator">||</span> cache<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span>args<span class="token punctuation">,</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>fn<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> adder <span class="token operator">=</span> <span class="token function">memorize</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span>
+
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>    <span class="token comment">// 2    cache: { [ 1 ] =&gt; 2 }</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>    <span class="token comment">// 2    cache: { [ 1 ] =&gt; 2, [ 1 ] =&gt; 2 }</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>    <span class="token comment">// 3    cache: { [ 1 ] =&gt; 2, [ 1 ] =&gt; 2, [ 2 ] =&gt; 3 }</span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="高阶函数" style="font-size: 30px;">2. 高阶函数</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>高阶函数</strong>就是输入参数里有函数，或者输出是函数的函数。</p>
+</div><div class="cl-preview-section"><h3 id="函数作为参数">2.1 函数作为参数</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果你用过 <code>setTimeout</code>、<code>setInterval</code>、ajax 请求，那么你已经用过高阶函数了，这是我们最常看到的场景：<strong>回调函数</strong>，因为它将函数作为参数传递给另一个函数。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">比如 ajax 请求中，我们通常使用回调函数来定义请求成功或者失败时的操作逻辑：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">$<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token string">"/request/url"</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"请求成功！"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在 Array、Object、String 等等基本对象的原型上有很多操作方法，可以接受回调函数来方便地进行对象操作。这里举一个很常用的 <code>Array.prototype.filter()</code> 方法，这个方法返回一个新创建的数组，包含所有回调函数执行后返回 <code>true</code> 或真值的数组元素。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> words <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'spray'</span><span class="token punctuation">,</span> <span class="token string">'limit'</span><span class="token punctuation">,</span> <span class="token string">'elite'</span><span class="token punctuation">,</span> <span class="token string">'exuberant'</span><span class="token punctuation">,</span> <span class="token string">'destruction'</span><span class="token punctuation">,</span> <span class="token string">'present'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> result <span class="token operator">=</span> words<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>word<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> word<span class="token punctuation">.</span>length <span class="token operator">&gt;</span> <span class="token number">6</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>       <span class="token comment">// 输出: ["exuberant", "destruction", "present"]</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">回调函数还有一个应用就是钩子，如果你用过 Vue 或者 React 等框架，那么你应该对钩子很熟悉了，它的形式是这样的：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ... 一些操作</span>
+    <span class="token function">callback</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><h3 id="函数作为返回值">2.2 函数作为返回值</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">另一个经常看到的高阶函数的场景是在一个函数内部输出另一个函数，比如：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">主要是利用闭包来保持着作用域：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> num <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> num <span class="token operator">=</span> num <span class="token operator">+</span> a
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">var</span> adder <span class="token operator">=</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>     <span class="token comment">// 输出: 1</span>
+<span class="token function">adder</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>     <span class="token comment">// 输出: 3</span>
+</code></pre>
+</div><div class="cl-preview-section"><h4 id="柯里化" style="font-size: 26px;">1. 柯里化</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>柯里化</strong>（Currying），又称部分求值（Partial Evaluation），是把接受多个参数的原函数变换成接受一个单一参数（原函数的第一个参数）的函数，并且返回一个新函数，新函数能够接受余下的参数，最后返回同原函数一样的结果。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">核心思想是把多参数传入的函数拆成单（或部分）参数函数，内部再返回调用下一个单（或部分）参数函数，依次处理剩余的参数。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">柯里化有 3 个常见作用：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">参数复用</li>
+<li style="font-size: 20px; line-height: 38px;">提前返回</li>
+<li style="font-size: 20px; line-height: 38px;">延迟计算/运行</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">先来看看柯里化的通用实现：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">// ES5 方式</span>
+<span class="token keyword">function</span> <span class="token function">currying</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> rest1 <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+    rest1<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> rest2 <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> rest1<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>rest2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ES6 方式</span>
+<span class="token keyword">function</span> <span class="token function">currying</span><span class="token punctuation">(</span>fn<span class="token punctuation">,</span> <span class="token operator">...</span>rest1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>rest2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> rest1<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>rest2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">用它将一个 <code>sayHello</code> 函数柯里化试试：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">// 接上面</span>
+<span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> fruit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`我叫 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">,我 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>age<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> 岁了, 我喜欢吃 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>fruit<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> curryingShowMsg1 <span class="token operator">=</span> <span class="token function">currying</span><span class="token punctuation">(</span>sayHello<span class="token punctuation">,</span> <span class="token string">'小明'</span><span class="token punctuation">)</span>
+<span class="token function">curryingShowMsg1</span><span class="token punctuation">(</span><span class="token number">22</span><span class="token punctuation">,</span> <span class="token string">'苹果'</span><span class="token punctuation">)</span>           <span class="token comment">// 输出: 我叫 小明,我 22 岁了, 我喜欢吃 苹果</span>
+
+<span class="token keyword">var</span> curryingShowMsg2 <span class="token operator">=</span> <span class="token function">currying</span><span class="token punctuation">(</span>sayHello<span class="token punctuation">,</span> <span class="token string">'小衰'</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token function">curryingShowMsg2</span><span class="token punctuation">(</span><span class="token string">'西瓜'</span><span class="token punctuation">)</span>               <span class="token comment">// 输出: 我叫 小衰,我 20 岁了, 我喜欢吃 西瓜</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">更高阶的用法参见：<a href="https://juejin.im/post/5ce027df518825259e2e4f35">JavaScript 函数式编程技巧 - 柯里化</a></p>
+</div><div class="cl-preview-section"><h4 id="反柯里化" style="font-size: 26px;">2. 反柯里化</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">柯里化是固定部分参数，返回一个接受剩余参数的函数，也称为部分计算函数，目的是为了缩小适用范围，创建一个针对性更强的函数。核心思想是把多参数传入的函数拆成单参数（或部分）函数，内部再返回调用下一个单参数（或部分）函数，依次处理剩余的参数。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">而<strong>反柯里化</strong>，从字面讲，意义和用法跟函数柯里化相比正好相反，扩大适用范围，创建一个应用范围更广的函数。使本来只有特定对象才适用的方法，扩展到更多的对象。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">先来看看反柯里化的通用实现吧~</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">// ES5 方式</span>
+Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">unCurrying</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> rest <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>call<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> rest<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ES6 方式</span>
+Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">unCurrying</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> self <span class="token operator">=</span> <span class="token keyword">this</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token operator">...</span>rest<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>call<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> rest<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果你觉得把函数放在 Function 的原型上不太好，也可以这样：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// ES5 方式</span>
+<span class="token keyword">function</span> <span class="token function">unCurrying</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>tar<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> rest <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>slice<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+    rest<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>tar<span class="token punctuation">,</span> rest<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ES6 方式</span>
+<span class="token keyword">function</span> <span class="token function">unCurrying</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span>tar<span class="token punctuation">,</span> <span class="token operator">...</span>argu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> fn<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>tar<span class="token punctuation">,</span> argu<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面简单试用一下反柯里化通用实现，我们将 Array 上的 <code>push</code> 方法借出来给 arguments 这样的类数组增加一个元素：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token comment">// 接上面</span>
+<span class="token keyword">var</span> push <span class="token operator">=</span> <span class="token function">unCurrying</span><span class="token punctuation">(</span>Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>push<span class="token punctuation">)</span>
+
+<span class="token keyword">function</span> <span class="token function">execPush</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">push</span><span class="token punctuation">(</span>arguments<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">execPush</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>    <span class="token comment">// 输出: [1, 2, 3, 4]</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">简单说，函数柯里化就是对高阶函数的降阶处理，缩小适用范围，创建一个针对性更强的函数。</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">function</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span>              <span class="token comment">// =&gt; function(arg1)(arg2)</span>
+<span class="token keyword">function</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">,</span> arg3<span class="token punctuation">)</span>        <span class="token comment">// =&gt; function(arg1)(arg2)(arg3)</span>
+<span class="token keyword">function</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">,</span> arg3<span class="token punctuation">,</span> arg4<span class="token punctuation">)</span>  <span class="token comment">// =&gt; function(arg1)(arg2)(arg3)(arg4)</span>
+<span class="token keyword">function</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">,</span> argn<span class="token punctuation">)</span>   <span class="token comment">// =&gt; function(arg1)(arg2)…(argn)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">而反柯里化就是反过来，增加适用范围，让方法使用场景更大。使用反柯里化, 可以把原生方法借出来，让任何对象拥有原生对象的方法。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript">obj<span class="token punctuation">.</span><span class="token function">func</span><span class="token punctuation">(</span>arg1<span class="token punctuation">,</span> arg2<span class="token punctuation">)</span>        <span class="token comment">// =&gt; func(obj, arg1, arg2)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以这样理解柯里化和反柯里化的区别：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">柯里化是在运算前提前传参，可以传递多个参数；</li>
+<li style="font-size: 20px; line-height: 38px;">反柯里化是延迟传参，在运算时把原来已经固定的参数或者 this 上下文等当作参数延迟到未来传递。</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">更高阶的用法参见：<a href="https://juejin.im/post/5ce12015f265da1bc552333e">JavaScript 函数式编程技巧 - 反柯里化</a></p>
+</div><div class="cl-preview-section"><h4 id="偏函数" style="font-size: 26px;">3. 偏函数</h4>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>偏函数</strong>是创建一个调用另外一个部分（参数或变量已预制的函数）的函数，函数可以根据传入的参数来生成一个真正执行的函数。其本身不包括我们真正需要的逻辑代码，只是根据传入的参数返回其他的函数，返回的函数中才有真正的处理逻辑比如：</p>
+</div><div class="cl-preview-section"><pre class="  language-js"><code class="prism  language-js"><span class="token keyword">var</span> <span class="token function-variable function">isType</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Object<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>toString<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token template-string"><span class="token string">`[object </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>type<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">]`</span></span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> isString <span class="token operator">=</span> <span class="token function">isType</span><span class="token punctuation">(</span><span class="token string">'String'</span><span class="token punctuation">)</span>
+<span class="token keyword">var</span> isFunction <span class="token operator">=</span> <span class="token function">isType</span><span class="token punctuation">(</span><span class="token string">'Function'</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这样就用偏函数快速创建了一组判断对象类型的方法~</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">偏函数和柯里化的区别：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>柯里化</strong>是把一个接受 n 个参数的函数，由原本的一次性传递所有参数并执行变成了可以分多次接受参数再执行，例如：<code>add = (x, y, z) =&gt; x + y + z</code>→<code>curryAdd = x =&gt; y =&gt; z =&gt; x + y + z</code>；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>偏函数</strong>固定了函数的某个部分，通过传入的参数或者方法返回一个新的函数来接受剩余的参数，数量可能是一个也可能是多个；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当一个柯里化函数只接受两次参数时，比如 <code>curry()()</code>，这时的柯里化函数和偏函数概念类似，可以认为偏函数是柯里化函数的退化版。</p>
+</div></div>
+            </div>
+                            <!-- 未买试读 -->
+                
+                    </div>
+        <div class="comments-con js-comments-con" id="coments_con">
+        </div>
+
+
+
+    </div>
+    
+    
+    
+
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

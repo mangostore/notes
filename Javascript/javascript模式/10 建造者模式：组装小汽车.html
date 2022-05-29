@@ -1,0 +1,579 @@
+<html><head><meta charset="utf-8"><title>10 建造者模式：组装小汽车-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+<div class="container clearfix" id="top" style="display: block; width: 1134px;">
+    
+    <div class="center_con js-center_con l" style="width: 1134px;">
+        <div class="article-con">
+                            <!-- 买过的阅读 -->
+                <div class="map">
+                    <a href="/read" target="_blank"><i class="imv2-feather-o"></i></a>
+                    <a href="/read/38" target="_blank">JavaScript 设计模式精讲</a>
+                    <a href="" target="_blank">
+                        <span>
+                            / 2-4 10 建造者模式：组装小汽车
+                        </span>
+                    </a>
+                </div>
+
+            
+
+
+            <div class="art-title" style="margin-top: 0px;">
+                10 建造者模式：组装小汽车
+            </div>
+            <div class="art-info">
+                
+                <span>
+                    更新时间：2019-07-05 10:37:54
+                </span>
+            </div>
+            <div class="art-top">
+                                <img src="https://img1.mukewang.com/5d11e15d0001cae706400359.jpg" alt="">
+                                                <div class="famous-word-box">
+                    <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                    <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                    <div class="famous-word">人只有献身于社会，才能找出那短暂而有风险的生命的意义。<p class="author">——爱因斯坦</p></div>
+                </div>
+                            </div>
+            <div class="art-content js-lookimg">
+                <div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>建造者模式</strong>（Builder Pattern）又称生成器模式，分步构建一个复杂对象，并允许按步骤构造。同样的构建过程可以采用不同的表示，将一个复杂对象的<strong>构建层与其表示层分离</strong>。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在工厂模式中，创建的结果都是一个完整的个体，我们对创建的过程并不关心，只需了解创建的结果。而在建造者模式中，我们关心的是对象的创建过程，因此我们通常将创建的复杂对象的模块化，使得被创建的对象的每一个子模块都可以得到高质量的复用，当然在灵活的 JavaScript 中我们可以有更灵活的实现。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文用到 ES6 的语法 <a href="http://es6.ruanyifeng.com/#docs/let">let/const</a> 、<a href="http://es6.ruanyifeng.com/#docs/class">Class</a> 等，如果还没接触过可以点击链接稍加学习 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="你曾见过的建造者模式" style="font-size: 30px;">1. 你曾见过的建造者模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">假定我们需要建造一个车，车这个产品是由多个部件组成，车身、引擎、轮胎。汽车制造厂一般不会自己完成每个部件的制造，而是把部件的制造交给对应的汽车零部件制造商，自己只进行装配，最后生产出整车。整车的每个部件都是一个相对独立的个体，都具有自己的生产过程，多个部件经过一系列的组装共同组成了一个完整的车。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="http://img.mukewang.com/5d1eb3f7000105ce06000400.jpg" alt="图片描述" data-original="http://img.mukewang.com/5d1eb3f7000105ce06000400.jpg" class="" style="cursor: pointer;"><br>
+类似的场景还有很多，比如生产一个笔记本电脑，由主板、显示器、壳子组成，每个部件都有自己独立的行为和功能，他们共同组成了一个笔记本电脑。笔记本电脑厂从部件制造商处获得制造完成的部件，再由自己完成组装，得到笔记本电脑这个完整的产品。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在这些场景中，有以下特点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">整车制造厂（指挥者）无需知道零部件的生产过程，零部件的生产过程一般由零部件厂商（建造者）来完成；</li>
+<li style="font-size: 20px; line-height: 38px;">整车制造厂（指挥者）决定以怎样的装配方式来组装零部件，以得到最终的产品；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="实例的代码实现" style="font-size: 30px;">2. 实例的代码实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以使用 JavaScript 来将上面的装配汽车的例子实现一下。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 建造者，汽车部件厂家，提供具体零部件的生产</span>
+<span class="token keyword">function</span> <span class="token function">CarBuilder</span><span class="token punctuation">(</span><span class="token punctuation">{</span> color <span class="token operator">=</span> <span class="token string">'white'</span><span class="token punctuation">,</span> weight <span class="token operator">=</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+    <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 生产部件，轮胎</span>
+CarBuilder<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">buildTyre</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token string">'small'</span><span class="token punctuation">:</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'小号轮胎'</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用小号轮胎'</span>
+            <span class="token keyword">break</span>
+        <span class="token keyword">case</span> <span class="token string">'normal'</span><span class="token punctuation">:</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'中号轮胎'</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用中号轮胎'</span>
+            <span class="token keyword">break</span>
+        <span class="token keyword">case</span> <span class="token string">'big'</span><span class="token punctuation">:</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'大号轮胎'</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用大号轮胎'</span>
+            <span class="token keyword">break</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 生产部件，发动机</span>
+CarBuilder<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">buildEngine</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token string">'small'</span><span class="token punctuation">:</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'小马力发动机'</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用小马力发动机'</span>
+            <span class="token keyword">break</span>
+        <span class="token keyword">case</span> <span class="token string">'normal'</span><span class="token punctuation">:</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'中马力发动机'</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用中马力发动机'</span>
+            <span class="token keyword">break</span>
+        <span class="token keyword">case</span> <span class="token string">'big'</span><span class="token punctuation">:</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'大马力发动机'</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用大马力发动机'</span>
+            <span class="token keyword">break</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 奔驰厂家，负责最终汽车产品的装配 */</span>
+<span class="token keyword">function</span> <span class="token function">benChiDirector</span><span class="token punctuation">(</span>tyre<span class="token punctuation">,</span> engine<span class="token punctuation">,</span> param<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> _car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span>
+    _car<span class="token punctuation">.</span><span class="token function">buildTyre</span><span class="token punctuation">(</span>tyre<span class="token punctuation">)</span>
+    _car<span class="token punctuation">.</span><span class="token function">buildEngine</span><span class="token punctuation">(</span>engine<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> _car
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 获得产品实例</span>
+<span class="token keyword">var</span> benchi1 <span class="token operator">=</span> <span class="token function">benChiDirector</span><span class="token punctuation">(</span><span class="token string">'small'</span><span class="token punctuation">,</span> <span class="token string">'big'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> color<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> weight<span class="token punctuation">:</span> <span class="token string">'1600kg'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>benchi1<span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   color: "red"</span>
+<span class="token comment">//   weight: "1600kg"</span>
+<span class="token comment">//   tyre: Tyre {tyreType: "小号轮胎", tyreIntro: "正在使用小号轮胎"}</span>
+<span class="token comment">//   engine: Engine {engineType: "大马力发动机", engineIntro: "正在使用大马力发动机"}</span>
+<span class="token comment">// }</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果访问者希望获得另一个型号的车，比如有「空调」功能的车，那么我们只需要给 <code>CarBuilder</code> 的原型 <code>prototype</code> 上增加一个空调部件的建造方法，然后再新建一个新的奔驰厂家指挥者方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">也可以使用 ES6 的写法改造一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 建造者，汽车部件厂家，提供具体零部件的生产</span>
+<span class="token keyword">class</span> <span class="token class-name">CarBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> color <span class="token operator">=</span> <span class="token string">'white'</span><span class="token punctuation">,</span> weight <span class="token operator">=</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+        <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，轮胎 */</span>
+    <span class="token function">buildTyre</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> tyre <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'small'</span><span class="token punctuation">:</span>
+                tyre<span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'小号轮胎'</span>
+                tyre<span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用小号轮胎'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'normal'</span><span class="token punctuation">:</span>
+                tyre<span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'中号轮胎'</span>
+                tyre<span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用中号轮胎'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'big'</span><span class="token punctuation">:</span>
+                tyre<span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'大号轮胎'</span>
+                tyre<span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用大号轮胎'</span>
+                <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tyre <span class="token operator">=</span> tyre
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，发动机 */</span>
+    <span class="token function">buildEngine</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> engine <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'small'</span><span class="token punctuation">:</span>
+                engine<span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'小马力发动机'</span>
+                engine<span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用小马力发动机'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'normal'</span><span class="token punctuation">:</span>
+                engine<span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'中马力发动机'</span>
+                engine<span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用中马力发动机'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'big'</span><span class="token punctuation">:</span>
+                engine<span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'大马力发动机'</span>
+                engine<span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用大马力发动机'</span>
+                <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>engine <span class="token operator">=</span> engine
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 指挥者，负责最终汽车产品的装配 */</span>
+<span class="token keyword">class</span> <span class="token class-name">BenChiDirector</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>tyre<span class="token punctuation">,</span> engine<span class="token punctuation">,</span> param<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> _car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span>
+        _car<span class="token punctuation">.</span><span class="token function">buildTyre</span><span class="token punctuation">(</span>tyre<span class="token punctuation">)</span>
+        _car<span class="token punctuation">.</span><span class="token function">buildEngine</span><span class="token punctuation">(</span>engine<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> _car
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 获得产品实例</span>
+<span class="token keyword">const</span> benchi1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BenChiDirector</span><span class="token punctuation">(</span><span class="token string">'small'</span><span class="token punctuation">,</span> <span class="token string">'big'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> color<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> weight<span class="token punctuation">:</span> <span class="token string">'1600kg'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>benchi1<span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   color: "red"</span>
+<span class="token comment">//   weight: "1600kg"</span>
+<span class="token comment">//   tyre: Tyre {tyreType: "小号轮胎", tyreIntro: "正在使用小号轮胎"}</span>
+<span class="token comment">//   engine: Engine {engineType: "大马力发动机", engineIntro: "正在使用大马力发动机"}</span>
+<span class="token comment">// }</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">作为灵活的 JavaScript，我们还可以使用链模式来完成部件的装配，对链模式还不熟悉的同学可以看一下后面有一篇单独介绍链模式的文章～</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 建造者，汽车部件厂家</span>
+<span class="token keyword">class</span> <span class="token class-name">CarBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> color <span class="token operator">=</span> <span class="token string">'white'</span><span class="token punctuation">,</span> weight <span class="token operator">=</span> <span class="token string">'0'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+        <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，轮胎 */</span>
+    <span class="token function">buildTyre</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> tyre <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'small'</span><span class="token punctuation">:</span>
+                tyre<span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'小号轮胎'</span>
+                tyre<span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用小号轮胎'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'normal'</span><span class="token punctuation">:</span>
+                tyre<span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'中号轮胎'</span>
+                tyre<span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用中号轮胎'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'big'</span><span class="token punctuation">:</span>
+                tyre<span class="token punctuation">.</span>tyreType <span class="token operator">=</span> <span class="token string">'大号轮胎'</span>
+                tyre<span class="token punctuation">.</span>tyreIntro <span class="token operator">=</span> <span class="token string">'正在使用大号轮胎'</span>
+                <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tyre <span class="token operator">=</span> tyre
+        <span class="token keyword">return</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，发动机 */</span>
+    <span class="token function">buildEngine</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> engine <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'small'</span><span class="token punctuation">:</span>
+                engine<span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'小马力发动机'</span>
+                engine<span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用小马力发动机'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'normal'</span><span class="token punctuation">:</span>
+                engine<span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'中马力发动机'</span>
+                engine<span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用中马力发动机'</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'big'</span><span class="token punctuation">:</span>
+                engine<span class="token punctuation">.</span>engineType <span class="token operator">=</span> <span class="token string">'大马力发动机'</span>
+                engine<span class="token punctuation">.</span>engineIntro <span class="token operator">=</span> <span class="token string">'正在使用大马力发动机'</span>
+                <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>engine <span class="token operator">=</span> engine
+        <span class="token keyword">return</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 汽车装配，获得产品实例</span>
+<span class="token keyword">const</span> benchi1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span><span class="token punctuation">{</span> color<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> weight<span class="token punctuation">:</span> <span class="token string">'1600kg'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">buildTyre</span><span class="token punctuation">(</span><span class="token string">'small'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">buildEngine</span><span class="token punctuation">(</span><span class="token string">'big'</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>benchi1<span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   color: "red"</span>
+<span class="token comment">//   weight: "1600kg"</span>
+<span class="token comment">//   tyre: Tyre {tyre: "小号轮胎", tyreIntro: "正在使用小号轮胎"}</span>
+<span class="token comment">//   engine: Engine {engine: "大马力发动机", engineIntro: "正在使用大马力发动机"}</span>
+<span class="token comment">// }</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这样将最终产品的创建流程使用链模式来实现，相当于将指挥者退化，指挥的过程通过链模式让用户自己实现，这样既增加了灵活性，装配过程也一目了然。如果希望扩展产品的部件，那么在建造者上增加部件实现方法，再适当修改链模式即可。</p>
+</div><div class="cl-preview-section"><h2 id="建造者模式的通用实现" style="font-size: 30px;">3. 建造者模式的通用实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们提炼一下建造者模式，这里的生产汽车的奔驰厂家就相当于指挥者（Director），厂家负责将不同的部件组装成最后的产品（Product），而部件的生产者是部件厂家相当于建造者（Builder），我们通过指挥者就可以获得希望的复杂的产品对象，再通过访问不同指挥者获得装配方式不同的产品。主要有下面几个概念：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>Director：</strong> 指挥者，调用建造者中的部件具体实现进行部件装配，相当于整车组装厂，最终返回装配完毕的产品；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Builder：</strong> 建造者，含有不同部件的生产方式给指挥者调用，是部件真正的生产者，但没有部件的装配流程；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Product：</strong> 产品，要返回给访问者的复杂对象；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">建造者模式的主要功能是构建复杂的产品，并且是复杂的、需要分步骤构建的产品，其构建的算法是统一的，构建的过程由指挥者决定，只要配置不同的指挥者，就可以构建出不同的复杂产品来。也就是说，建造者模式<strong>将产品装配的算法和具体部件的实现分离</strong>，这样构建的算法可以扩展和复用，部件的具体实现也可以方便地扩展和复用，从而可以灵活地通过组合来构建出不同的产品对象。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">概略图如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="https://i.loli.net/2019/05/13/5cd95edc099fb31547.png" alt="" data-original="https://i.loli.net/2019/05/13/5cd95edc099fb31547.png" class="" style="cursor: pointer;"></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面是通用的实现。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">首先使用 ES6 的 class 语法：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 建造者，部件生产</span>
+<span class="token keyword">class</span> <span class="token class-name">ProductBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>param <span class="token operator">=</span> param
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，part1 */</span>
+    <span class="token function">buildPart1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// ... Part1 生产过程</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>part1 <span class="token operator">=</span> <span class="token string">'part1'</span>
+        
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，part2 */</span>
+    <span class="token function">buildPart2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// ... Part2 生产过程</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>part2 <span class="token operator">=</span> <span class="token string">'part2'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 指挥者，负责最终产品的装配 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Director</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> _product <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ProductBuilder</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span>
+        _product<span class="token punctuation">.</span><span class="token function">buildPart1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        _product<span class="token punctuation">.</span><span class="token function">buildPart2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> _product
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 获得产品实例</span>
+<span class="token keyword">const</span> product <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Director</span><span class="token punctuation">(</span><span class="token string">'param'</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">结合链模式：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 建造者，汽车部件厂家</span>
+<span class="token keyword">class</span> <span class="token class-name">CarBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>param <span class="token operator">=</span> param
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，part1 */</span>
+    <span class="token function">buildPart1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>part1 <span class="token operator">=</span> <span class="token string">'part1'</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 生产部件，part2 */</span>
+    <span class="token function">buildPart2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>part2 <span class="token operator">=</span> <span class="token string">'part2'</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 汽车装配，获得产品实例</span>
+<span class="token keyword">const</span> benchi1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span><span class="token string">'param'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">buildPart1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">buildPart2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果希望扩展实例的功能，那么只需要在建造者类的原型上增加一个实例方法，再返回 <code>this</code> 即可。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">值得一提的是，结合链模式的建造者模式中，装配复杂对象的链式装配过程就是指挥者 Director 角色，只不过在链式装配过程中不再封装在具体指挥者中，而是由使用者自己确定装配过程。</p>
+</div><div class="cl-preview-section"><h2 id="实战中的建造者模式" style="font-size: 30px;">4. 实战中的建造者模式</h2>
+</div><div class="cl-preview-section"><h3 id="重构一个具有很多参数的构造函数">4.1 重构一个具有很多参数的构造函数</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有时候你会遇到一个参数很多的构造函数，比如：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 汽车建造者</span>
+<span class="token keyword">class</span> <span class="token class-name">CarBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>engine<span class="token punctuation">,</span> weight<span class="token punctuation">,</span> height<span class="token punctuation">,</span> color<span class="token punctuation">,</span> tyre<span class="token punctuation">,</span> name<span class="token punctuation">,</span> type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>engine <span class="token operator">=</span> engine
+        <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight
+        <span class="token keyword">this</span><span class="token punctuation">.</span>height <span class="token operator">=</span> height
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tyre <span class="token operator">=</span> tyre
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> type
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> benchi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span><span class="token string">'大马力发动机'</span><span class="token punctuation">,</span> <span class="token string">'2ton'</span><span class="token punctuation">,</span> <span class="token string">'white'</span><span class="token punctuation">,</span> <span class="token string">'大号轮胎'</span><span class="token punctuation">,</span> <span class="token string">'奔驰'</span><span class="token punctuation">,</span> <span class="token string">'AMG'</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果构造函数的参数多于 3 个，在使用的时候就很容易弄不清哪个参数对应的是什么含义，你可以使用对象解构赋值的方式来提高可读性和使用便利性，也可以使用建造者模式的思想来进行属性赋值，这是另一个思路。代码如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 汽车建造者</span>
+<span class="token keyword">class</span> <span class="token class-name">CarBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>engine<span class="token punctuation">,</span> weight<span class="token punctuation">,</span> height<span class="token punctuation">,</span> color<span class="token punctuation">,</span> tyre<span class="token punctuation">,</span> name<span class="token punctuation">,</span> type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>engine <span class="token operator">=</span> engine
+        <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight
+        <span class="token keyword">this</span><span class="token punctuation">.</span>height <span class="token operator">=</span> height
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tyre <span class="token operator">=</span> tyre
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> type
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">setCarProperty</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">getOwnPropertyNames</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value
+            <span class="token keyword">return</span> <span class="token keyword">this</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Key error : </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> key <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> 不是本实例上的属性`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> benchi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'engine'</span><span class="token punctuation">,</span> <span class="token string">'大马力发动机'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'weight'</span><span class="token punctuation">,</span> <span class="token string">'2ton'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'height'</span><span class="token punctuation">,</span> <span class="token string">'2000mm'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'color'</span><span class="token punctuation">,</span> <span class="token string">'white'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'tyre'</span><span class="token punctuation">,</span> <span class="token string">'大号轮胎'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'奔驰'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setCarProperty</span><span class="token punctuation">(</span><span class="token string">'type'</span><span class="token punctuation">,</span> <span class="token string">'AMG'</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">每个键都是用一个同样的方法来设置，或许你觉得不太直观，我们可以将设置每个属性的操作都单独列为一个方法，这样可读性就更高了：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// 汽车建造者</span>
+<span class="token keyword">class</span> <span class="token class-name">CarBuilder</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>engine<span class="token punctuation">,</span> weight<span class="token punctuation">,</span> height<span class="token punctuation">,</span> color<span class="token punctuation">,</span> tyre<span class="token punctuation">,</span> name<span class="token punctuation">,</span> type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>engine <span class="token operator">=</span> engine
+        <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight
+        <span class="token keyword">this</span><span class="token punctuation">.</span>height <span class="token operator">=</span> height
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+        <span class="token keyword">this</span><span class="token punctuation">.</span>tyre <span class="token operator">=</span> tyre
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> type
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">setPropertyFuncChain</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Object<span class="token punctuation">.</span><span class="token function">getOwnPropertyNames</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+          <span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>key <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+              <span class="token keyword">const</span> funcName <span class="token operator">=</span> <span class="token string">'set'</span> <span class="token operator">+</span> key<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token regex">/^\w/g</span><span class="token punctuation">,</span> str <span class="token operator">=&gt;</span> str<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+              <span class="token keyword">this</span><span class="token punctuation">[</span>funcName<span class="token punctuation">]</span> <span class="token operator">=</span> value <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+                  <span class="token keyword">this</span><span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> value
+                  <span class="token keyword">return</span> <span class="token keyword">this</span>
+              <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> benchi <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CarBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setPropertyFuncChain</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setEngine</span><span class="token punctuation">(</span><span class="token string">'大马力发动机'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setWeight</span><span class="token punctuation">(</span><span class="token string">'2ton'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setHeight</span><span class="token punctuation">(</span><span class="token string">'2000mm'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setColor</span><span class="token punctuation">(</span><span class="token string">'white'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setTyre</span><span class="token punctuation">(</span><span class="token string">'大号轮胎'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">'奔驰'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">setType</span><span class="token punctuation">(</span><span class="token string">'AMG'</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这里用到了点正则的知识，如果不太理解的同学可以参见 <a href="https://juejin.im/post/5b61b0f86fb9a04fd343af8f#heading-25">&lt;JS 正则表达式必知必会&gt;</a></p>
+</div><div class="cl-preview-section"><h3 id="重构-react-的书写形式">4.2 重构 React 的书写形式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 这个方式不一定推荐，只是用来开阔视野。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当我们写一个 React 组件的时候，一般结构形式如下；</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">class</span> <span class="token class-name">ContainerComponent</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">fetchThings</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">&lt;</span>PresentationalComponent <span class="token punctuation">{</span><span class="token operator">...</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+ContainerComponent<span class="token punctuation">.</span>propTypes <span class="token operator">=</span> <span class="token punctuation">{</span>
+  fetchThings<span class="token punctuation">:</span> PropTypes<span class="token punctuation">.</span>func<span class="token punctuation">.</span>isRequired
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">mapStateToProps</span> <span class="token operator">=</span> state <span class="token operator">=&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  things<span class="token punctuation">:</span> state<span class="token punctuation">.</span>things
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> <span class="token function-variable function">mapDispatchToProps</span> <span class="token operator">=</span> dispatch <span class="token operator">=&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  fetchThings<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">fetchThings</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  selectThing<span class="token punctuation">:</span> id <span class="token operator">=&gt;</span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">selectThing</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  blowShitUp<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">blowShitUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span>
+  mapStateToProps<span class="token punctuation">,</span>
+  mapDispatchToProps
+<span class="token punctuation">)</span><span class="token punctuation">(</span>ContainerComponent<span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">通过建造者模式重构，我们可以将组件形式写成如下方式：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">ComponentBuilder</span><span class="token punctuation">(</span><span class="token string">'ContainerComponent'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>props <span class="token operator">=&gt;</span> <span class="token operator">&lt;</span>PresentationalComponent <span class="token punctuation">{</span><span class="token operator">...</span>props<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">&gt;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">componentDidMount</span><span class="token punctuation">(</span>props <span class="token operator">=&gt;</span> props<span class="token punctuation">.</span><span class="token function">fetchThings</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">propTypes</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    fetchThings<span class="token punctuation">:</span> PropTypes<span class="token punctuation">.</span>func<span class="token punctuation">.</span>isRequired
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">mapStateToProps</span><span class="token punctuation">(</span>state <span class="token operator">=&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    things<span class="token punctuation">:</span> state<span class="token punctuation">.</span>things
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">mapDispatchToProps</span><span class="token punctuation">(</span>dispatch <span class="token operator">=&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    fetchThings<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">fetchThings</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    selectThing<span class="token punctuation">:</span> id <span class="token operator">=&gt;</span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">selectThing</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    blowShitUp<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">blowShitUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">至于建造者的实现，可以参见 <a href="https://github.com/SHERlocked93/imooc-frontend-design-pattern/blob/20190704/10-%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/10-08.builder%20react.js">Github 代码</a>，这里就不多加演示了～</p>
+</div><div class="cl-preview-section"><h2 id="建造者模式的优缺点" style="font-size: 30px;">5. 建造者模式的优缺点</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">建造者模式的优点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">使用建造者模式可以<strong>使产品的构建流程和产品的表现分离</strong>，也就是将产品的创建算法和产品组成的实现隔离，访问者不必知道产品部件实现的细节；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>扩展方便</strong>，如果希望生产一个装配顺序或方式不同的新产品，那么直接新建一个指挥者即可，不用修改既有代码，符合开闭原则；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>更好的复用性</strong>，建造者模式将产品的创建算法和产品组成的实现分离，所以产品创建的算法可以复用，产品部件的实现也可以复用，带来很大的灵活性；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">建造者模式的缺点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">建造者模式一般适用于产品之间组成部件类似的情况，<strong>如果产品之间差异性很大、复用性不高</strong>，那么不要使用建造者模式；</li>
+<li style="font-size: 20px; line-height: 38px;">实例的创建增加了许多额外的结构，无疑增加了许多复杂度，<strong>如果对象粒度不大</strong>，那么我们最好直接创建对象；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="建造者模式的适用场景" style="font-size: 30px;">6. 建造者模式的适用场景</h2>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">相同的方法，不同的执行顺序，产生不一样的产品时，可以采用建造者模式；</li>
+<li style="font-size: 20px; line-height: 38px;">产品的组成部件类似，通过组装不同的组件获得不同产品时，可以采用建造者模式；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="其他相关模式" style="font-size: 30px;">7. 其他相关模式</h2>
+</div><div class="cl-preview-section"><h3 id="建造者模式与工厂模式">7.1 建造者模式与工厂模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">建造者模式和工厂模式最终都是创建一个完整的产品，但是在建造者模式中我们更关心对象创建的过程，将创建对象的方法模块化，从而更好地复用这些模块。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当然建造者模式与工厂模式也是可以组合使用的，比如建造者中一般会提供不同的部件实现，那么这里就可以使用工厂模式来提供具体的部件对象，再通过指挥者来进行装配。</p>
+</div><div class="cl-preview-section"><h3 id="建造者模式与模版方法模式">7.2 建造者模式与模版方法模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">指挥者的实现可以和模版方法模式相结合。也就是说，指挥者中部件的装配过程，可以使用模版方法模式来固定装配算法，把部件实现方法分为模板方法和基本方法，进一步提取公共代码，扩展可变部分。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">是否采用模版方法模式看具体场景，如果产品的部件装配顺序很明确，但是具体的实现是未知的、灵活的，那么你可以适当考虑是否应该将算法骨架提取出来。</p>
+</div><div class="cl-preview-section"><hr>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">推介阅读</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://medium.com/@jagardner2113/react-component-builder-pattern-5cb864ce5fc0">React Component Builder Pattern – Jacob Gardner</a></li>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://stackoverflow.com/questions/328496/when-would-you-use-the-builder-pattern">Java - When would you use the Builder Pattern?</a></li>
+<li style="font-size: 20px; line-height: 38px;"><a href="https://juejin.im/post/5b61b0f86fb9a04fd343af8f">JS 正则表达式必知必会</a></li>
+</ol>
+</div></div>
+            </div>
+                            <!-- 买过的阅读 -->
+                <div class="art-next-prev clearfix">
+                                                                        <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/483">
+                                                    <div class="prev l clearfix">
+                                <div class="icon l">
+                                    <i class="imv2-arrow3_l"></i>
+                                </div>
+                                <p>
+                                    09 抽象工厂模式：又去小餐馆下馆子
+                                </p>
+                            </div>
+                        </a>
+                                                                                            <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/486">
+                                                    <div class="next r clearfix">
+                                <p>
+                                    11 代理模式：找明星拍广告
+                                </p>
+                                <div class="icon r">
+                                    <i class="imv2-arrow3_r"></i>
+                                </div>
+
+                            </div>
+                        </a>
+                                    </div>
+                    </div>
+        <div class="comments-con js-comments-con" id="coments_con">     <div class="number">精选留言 <span class="js-number">0</span></div>     <div class="comments">         <div class="input-fake js-showcommentModal">             欢迎在这里发表留言，作者筛选后可公开显示         </div>                      <div class="noData">                 <p>                     <i class="imv2-error_c"></i>                 </p>                 <p>目前暂无任何讨论</p>             </div>              </div>  </div>
+
+
+
+    </div>
+    
+    
+    
+
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

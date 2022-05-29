@@ -1,0 +1,445 @@
+<html><head><meta charset="utf-8"><title>17 桥接模式：组装变频洗衣机-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+
+<div class="main-con hide-menu">
+    <!-- 左侧菜单 & 索引 -->
+    
+    <div class="right-content" style="padding-left: 0px;">
+        <div class="container clearfix" id="top" style="width: 1134px; display: block;">
+            
+            
+            <div class="center_con js-center_con l" style="width: 1134px;">
+                <div class="article-con">
+                                            <!-- 买过的阅读 -->
+                        
+
+                    
+                    <div class="art-title" style="margin-top: 0px;">
+                        17 桥接模式：组装变频洗衣机
+                    </div>
+                    <div class="art-info clearfix">
+                        
+                        <span class="l">
+                            更新时间：2019-07-31 16:52:48
+                        </span>
+                    </div>
+                    <div class="art-top">
+                                                <img src="https://img2.mukewang.com/5d244c1500013e0406400359.jpg" alt="">
+                                                                        <div class="famous-word-box">
+                            <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                            <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                            <div class="famous-word">什么是路？就是从没路的地方践踏出来的，从只有荆棘的地方开辟出来的。 <p class="author">—— 鲁迅</p></div>
+                        </div>
+                                            </div>
+                    <div class="art-content js-lookimg">
+                        <div id="article_content">
+                            <div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>桥接模式</strong>（Bridge Pattern）又称桥梁模式，将抽象部分与它的实现部分分离，使它们都可以独立地变化。使用组合关系代替继承关系，降低抽象和实现两个可变维度的耦合度。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">抽象部分和实现部分可能不太好理解，举个例子，香蕉、苹果、西瓜，它们共同的抽象部分就是水果，可以吃，实现部分就是不同的水果实体。再比如黑色手提包、红色钱包、蓝色公文包，它们共同的抽象部分是包和颜色，这部分的共性就可以被作为抽象提取出来。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文可能用到一些编程技巧比如 <a href="https://juejin.im/post/5b51e5d3f265da0f4861143c#heading-5">短路运算符</a>，还有一些 ES6 的语法 <a href="http://es6.ruanyifeng.com/#docs/let">let/const</a> 、<a href="http://es6.ruanyifeng.com/#docs/class">Class</a> 等，如果还没接触过可以点击链接稍加学习 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="你曾见过的桥接模式" style="font-size: 30px;">1. 你曾见过的桥接模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">厂家在生产洗衣机、冰箱、空调等电器的时候，不同型号产品之间有一些部件，比如变频洗衣机：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">产品型号 A 有小功率电机、直立滚筒、小功率变频器；</li>
+<li style="font-size: 20px; line-height: 38px;">产品型号 B 有中功率电机、横置滚筒、中功率变频器；</li>
+<li style="font-size: 20px; line-height: 38px;">产品型号 C 有大功率电机、横置滚筒、大功率变频器；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">洗衣机产品由这三个部分组成，那么可以提取电机、滚筒、变频器部件作为抽象维度，在新建洗衣机实例的时候，把抽象出来的部件桥接起来组成一个完整的洗衣机实例。在变频洗衣机系列产品中，产品的部件可以沿着各自维度独立地变化。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d4154fa0001b8f406400426.jpg" data-original="//img.mukewang.com/5d4154fa0001b8f406400426.jpg" alt="图片描述"><br>
+再比如皮包，包的种类比如钱包、书包、公文包是一个维度，包的尺寸是一个维度，包的颜色又是一个维度，这些维度可以自由变化。这种情况在系统设计中，如果给每个种类对应的每个尺寸和颜色都设置一个类，那么系统中的类就会很多，如果根据实际需要对种类、尺寸、颜色这些维度进行组合，那么将大大减少系统中类的个数。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在类似场景中，这些例子有以下特点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">将抽象和实现分离，互相独立互不影响；</li>
+<li style="font-size: 20px; line-height: 38px;">产品有多个维度（部件），每个维度都可以独立变化（实例化过程），洗衣机这个例子的维度就是电机、滚筒、变频器，洗衣机产品在这几个维度可以独立地进行变化，从而组装成不同的洗衣机产品；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="实例的代码实现" style="font-size: 30px;">2. 实例的代码实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以使用 JavaScript 来将之前的变频洗衣机例子实现一下。</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 组装洗衣机 */</span>
+<span class="token keyword">function</span> <span class="token function">Washer</span><span class="token punctuation">(</span>motorType<span class="token punctuation">,</span> rollerType<span class="token punctuation">,</span> transducerType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>motor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Motor</span><span class="token punctuation">(</span>motorType<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>roller <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Roller</span><span class="token punctuation">(</span>rollerType<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>transducer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Transducer</span><span class="token punctuation">(</span>transducerType<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+Washer<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">work</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>motor<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>roller<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>transducer<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 电机 */</span>
+<span class="token keyword">function</span> <span class="token function">Motor</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>motorType <span class="token operator">=</span> type <span class="token operator">+</span> <span class="token string">'电机'</span>
+<span class="token punctuation">}</span>
+
+Motor<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">run</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>motorType <span class="token operator">+</span> <span class="token string">'开始工作'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 滚筒 */</span>
+<span class="token keyword">function</span> <span class="token function">Roller</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>rollerType <span class="token operator">=</span> type <span class="token operator">+</span> <span class="token string">'滚筒'</span>
+<span class="token punctuation">}</span>
+
+Roller<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">run</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>rollerType <span class="token operator">+</span> <span class="token string">'开始工作'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 变频器 */</span>
+<span class="token keyword">function</span> <span class="token function">Transducer</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>transducerType <span class="token operator">=</span> type <span class="token operator">+</span> <span class="token string">'变频器'</span>
+<span class="token punctuation">}</span>
+
+Transducer<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">run</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>transducerType <span class="token operator">+</span> <span class="token string">'开始工作'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 新建洗衣机</span>
+<span class="token keyword">var</span> washerA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Washer</span><span class="token punctuation">(</span><span class="token string">'小功率'</span><span class="token punctuation">,</span> <span class="token string">'直立'</span><span class="token punctuation">,</span> <span class="token string">'小功率'</span><span class="token punctuation">)</span>
+washerA<span class="token punctuation">.</span><span class="token function">work</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：小功率电机开始工作</span>
+<span class="token comment">//      直立滚筒开始工作</span>
+<span class="token comment">//      小功率变频器开始工作</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">由于产品部件可以独立变化，所以创建新的洗衣机产品就非常容易：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> washerD <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Washer</span><span class="token punctuation">(</span><span class="token string">'小功率'</span><span class="token punctuation">,</span> <span class="token string">'直立'</span><span class="token punctuation">,</span> <span class="token string">'中功率'</span><span class="token punctuation">)</span>
+washerD<span class="token punctuation">.</span><span class="token function">work</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：小功率电机开始工作</span>
+<span class="token comment">//      直立滚筒开始工作</span>
+<span class="token comment">//      中功率变频器开始工作</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到由于洗衣机的结构被分别抽象为几个部件的组合，部件的实例化是在部件类各自的构造函数中完成，因此部件之间的实例化不会相互影响，新产品的创建也变得容易，这就是桥接模式的好处。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面我们用 ES6 的 Class 语法实现一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 组装洗衣机 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Washer</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>motorType<span class="token punctuation">,</span> rollerType<span class="token punctuation">,</span> transducerType<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>motor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Motor</span><span class="token punctuation">(</span>motorType<span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>roller <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Roller</span><span class="token punctuation">(</span>rollerType<span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>transducer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Transducer</span><span class="token punctuation">(</span>transducerType<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 开始使用 */</span>
+    <span class="token function">work</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>motor<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>roller<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>transducer<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 电机 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Motor</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>motorType <span class="token operator">=</span> type <span class="token operator">+</span> <span class="token string">'电机'</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>motorType <span class="token operator">+</span> <span class="token string">'开始工作'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 滚筒 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Roller</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>rollerType <span class="token operator">=</span> type <span class="token operator">+</span> <span class="token string">'滚筒'</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>rollerType <span class="token operator">+</span> <span class="token string">'开始工作'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 变频器 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Transducer</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>transducerType <span class="token operator">=</span> type <span class="token operator">+</span> <span class="token string">'变频器'</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>transducerType <span class="token operator">+</span> <span class="token string">'开始工作'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> washerA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Washer</span><span class="token punctuation">(</span><span class="token string">'小功率'</span><span class="token punctuation">,</span> <span class="token string">'直立'</span><span class="token punctuation">,</span> <span class="token string">'小功率'</span><span class="token punctuation">)</span>
+washerA<span class="token punctuation">.</span><span class="token function">work</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：小功率电机开始工作</span>
+<span class="token comment">//      直立滚筒开始工作</span>
+<span class="token comment">//      小功率变频器开始工作</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果再精致一点，可以让电机、滚筒、变频器等部件实例继承自各自的抽象类，将面向抽象进行到底，但是桥接模式在 JavaScript 中应用不多，适当了解即可，不用太死扣。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">有时候为了更复用部件，可以将部件的实例化拿出来，对于洗衣机来说一个实体部件当然不能用两次，这里使用皮包的例子：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 皮包 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Bag</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">,</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> type
+        <span class="token keyword">this</span><span class="token punctuation">.</span>color <span class="token operator">=</span> color
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 展示 */</span>
+    <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>color<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 皮包类型 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Type</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>typeType <span class="token operator">=</span> type
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>typeType
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 皮包颜色 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Color</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>colorType <span class="token operator">=</span> type
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>colorType
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token comment">/* 抽象实例化 */</span>
+<span class="token keyword">const</span> redColor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Color</span><span class="token punctuation">(</span><span class="token string">'红色'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> walletType <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Type</span><span class="token punctuation">(</span><span class="token string">'钱包'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> briefcaseType <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Type</span><span class="token punctuation">(</span><span class="token string">'公文包'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> bagA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bag</span><span class="token punctuation">(</span>walletType<span class="token punctuation">,</span> redColor<span class="token punctuation">)</span>
+bagA<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：红色钱包</span>
+
+<span class="token keyword">const</span> bagB <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bag</span><span class="token punctuation">(</span>briefcaseType<span class="token punctuation">,</span> redColor<span class="token punctuation">)</span>
+bagB<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 输出：红色公文包</span>
+</code></pre>
+</div><div class="cl-preview-section"><h2 id="桥接模式的原理" style="font-size: 30px;">3. 桥接模式的原理</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以提炼一下桥接模式，洗衣机是产品（Product），电机、滚筒、变频器属于抽象出来的部件种类（Components），也属于独立的维度，而具体的部件实体小功率电机、直立滚筒、大功率变频器等属于部件实例（Instances），这些实例可以沿着各自维度变化，共同组成对应产品。主要有以下几个概念：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>Product：</strong> 产品，由多个独立部件组成的产品；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Component：</strong> 部件，组成产品的部件类；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Instance：</strong> 部件类的实例；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">概略图如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d4155690001632d06710621.png" data-original="//img.mukewang.com/5d4155690001632d06710621.png" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="实战中的桥接模式" style="font-size: 30px;">4. 实战中的桥接模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在某一个开发场景，一个按钮的前景色本为黑色背景色为浅灰色，当光标 <code>mouseover</code> 的时候改变前景色为蓝色、背景色为绿色、尺寸变为 <code>1.5</code> 倍，当光标 <code>mouseleave</code> 的时候还原前景色、背景色、尺寸，在鼠标按下的时候前景色变为红色、背景色变为紫色、尺寸变为 <code>0.5</code> 倍，抬起后恢复原状。怎么样，这个需求是不是有点麻烦，别管为什么有这么奇葩的需求（产品：这个需求很简单，怎么实现我不管），现在需求已经怼到脸上了，我们要如何去实现呢？</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们自然可以这样写：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> btn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'btn'</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mouseover'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'color'</span><span class="token punctuation">,</span> <span class="token string">'blue'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'background-color'</span><span class="token punctuation">,</span> <span class="token string">'green'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'transform'</span><span class="token punctuation">,</span> <span class="token string">'scale(1.5)'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mouseleave'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'color'</span><span class="token punctuation">,</span> <span class="token string">'black'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'background-color'</span><span class="token punctuation">,</span> <span class="token string">'lightgray'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'transform'</span><span class="token punctuation">,</span> <span class="token string">'scale(1)'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mousedown'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'color'</span><span class="token punctuation">,</span> <span class="token string">'red'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'background-color'</span><span class="token punctuation">,</span> <span class="token string">'purple'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'transform'</span><span class="token punctuation">,</span> <span class="token string">'scale(.5)'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mouseup'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'color'</span><span class="token punctuation">,</span> <span class="token string">'black'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'background-color'</span><span class="token punctuation">,</span> <span class="token string">'lightgray'</span><span class="token punctuation">)</span>
+    btn<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'transform'</span><span class="token punctuation">,</span> <span class="token string">'scale(1)'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">代码和预览参见： <a href="https://codepen.io/SHERlocked93/pen/gVmBKW">Codepen - 桥接模式反模式</a></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">的确可以达到目标需求，但是我们可以使用桥接模式来改造一下，我们可以把 DOM 对象的前景色、背景色作为其外观部件，尺寸属性是另一个尺寸部件，这样的话对各自部件的操作可以作为抽象被提取出来，使得对各自部件可以独立且方便地操作：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> btn <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'btn'</span><span class="token punctuation">)</span>
+
+<span class="token comment">/* 设置前景色和背景色 */</span>
+<span class="token keyword">function</span> <span class="token function">setColor</span><span class="token punctuation">(</span>element<span class="token punctuation">,</span> color <span class="token operator">=</span> <span class="token string">'black'</span><span class="token punctuation">,</span> bgc <span class="token operator">=</span> <span class="token string">'lightgray'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    element<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'color'</span><span class="token punctuation">,</span> color<span class="token punctuation">)</span>
+    element<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'background-color'</span><span class="token punctuation">,</span> bgc<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 设置尺寸 */</span>
+<span class="token keyword">function</span> <span class="token function">setSize</span><span class="token punctuation">(</span>element<span class="token punctuation">,</span> size <span class="token operator">=</span> <span class="token string">'1'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    element<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'transform'</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`scale(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> size <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mouseover'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setColor</span><span class="token punctuation">(</span>btn<span class="token punctuation">,</span> <span class="token string">'blue'</span><span class="token punctuation">,</span> <span class="token string">'green'</span><span class="token punctuation">)</span>
+    <span class="token function">setSize</span><span class="token punctuation">(</span>btn<span class="token punctuation">,</span> <span class="token string">'1.5'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mouseleave'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setColor</span><span class="token punctuation">(</span>btn<span class="token punctuation">)</span>
+    <span class="token function">setSize</span><span class="token punctuation">(</span>btn<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mousedown'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setColor</span><span class="token punctuation">(</span>btn<span class="token punctuation">,</span> <span class="token string">'red'</span><span class="token punctuation">,</span> <span class="token string">'purple'</span><span class="token punctuation">)</span>
+    <span class="token function">setSize</span><span class="token punctuation">(</span>btn<span class="token punctuation">,</span> <span class="token string">'.5'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+btn<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'mouseup'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">setColor</span><span class="token punctuation">(</span>btn<span class="token punctuation">)</span>
+    <span class="token function">setSize</span><span class="token punctuation">(</span>btn<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">代码和预览参见： <a href="https://codepen.io/SHERlocked93/pen/GVWweY">Codepen - 桥接模式示例</a></p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">是不是看起来清晰多了，这里的 <code>setColor</code>、<code>setSize</code> 就是桥接函数，是将 DOM （产品）及其属性（部件）连接在一起的桥梁，用户只要给桥接函数传递参数即可，十分便捷。其他 DOM 要有类似的对外观部件和尺寸部件的操作，也可以方便地进行复用。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">效果如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img class="" src="https://img.mukewang.com/5d4155c80001db7004720216.gif" data-original="//img.mukewang.com/5d4155c80001db7004720216.gif" alt="图片描述"></p>
+</div><div class="cl-preview-section"><h2 id="桥接模式的优缺点" style="font-size: 30px;">5. 桥接模式的优缺点</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">桥接模式的优点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">分离了抽象和实现部分，将实现层（DOM 元素事件触发并执行具体修改逻辑）和抽象层（ 元素外观、尺寸部分的修改函数）解耦，<strong>有利于分层</strong>；</li>
+<li style="font-size: 20px; line-height: 38px;">提高了<strong>可扩展性</strong>，多个维度的部件自由组合，避免了类继承带来的强耦合关系，也减少了部件类的数量；</li>
+<li style="font-size: 20px; line-height: 38px;">使用者<strong>不用关心细节的实现</strong>，可以方便快捷地进行使用；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">桥接模式的缺点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">桥接模式要求两个部件没有耦合关系，否则无法独立地变化，因此要求正确的对系统变化的维度进行识别，使用范围存在局限性；</li>
+<li style="font-size: 20px; line-height: 38px;">桥接模式的引入增加了系统复杂度；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="桥接模式的适用场景" style="font-size: 30px;">6. 桥接模式的适用场景</h2>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">如果产品的部件有独立的变化维度，可以考虑桥接模式；</li>
+<li style="font-size: 20px; line-height: 38px;">不希望使用继承，或因为多层次继承导致系统类的个数急剧增加的系统；</li>
+<li style="font-size: 20px; line-height: 38px;">产品部件的粒度越细，部件复用的必要性越大，可以考虑桥接模式；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="其他相关模式" style="font-size: 30px;">7. 其他相关模式</h2>
+</div><div class="cl-preview-section"><h3 id="桥接模式和策略模式">7.1 桥接模式和策略模式</h3>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>桥接模式：</strong> 复用部件类，不同部件的实例相互之间无法替换，但是相同部件的实例一般可以替换；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>策略模式：</strong> 复用策略类，不同策略之间地位平等，可以相互替换；</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="桥接模式与模板方法模式">7.2 桥接模式与模板方法模式</h3>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>桥接模式：</strong> 将组成产品的部件实例的创建，延迟到实例的具体创建过程中；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>模版方法模式：</strong> 将创建产品的某一步骤，延迟到子类中实现；</li>
+</ol>
+</div><div class="cl-preview-section"><h3 id="桥接模式与抽象工厂模式">7.3 桥接模式与抽象工厂模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这两个模式可以组合使用，比如部件类实例的创建可以结合抽象工厂模式，因为部件类实例也属于一个产品类簇，明显属于抽象工厂模式的适用范围，如果创建的部件类不多，或者比较简单，也可以使用简单工厂模式。</p>
+</div>}
+                        </div>
+                    </div>
+                                            <!-- 买过的阅读 -->
+                        <div class="art-next-prev clearfix">
+                                                                                                <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/38/article/491">
+                                                                    <div class="prev l clearfix">
+                                        <div class="icon l">
+                                            <i class="imv2-arrow3_l"></i>
+                                        </div>
+                                        <p>
+                                            16 组合模式：文档结构树
+                                        </p>
+                                    </div>
+                                </a>
+                                                                                                                            <!-- 已买且开放 或者可以试读 -->
+                                    <a href="/read/38/article/493">
+                                                                    <div class="next r clearfix">
+                                        <p>
+                                            18 发布-订阅模式：去 adadis 买鞋
+                                        </p>
+                                        <div class="icon r">
+                                            <i class="imv2-arrow3_r"></i>
+                                        </div>
+
+                                    </div>
+                                </a>
+                                                    </div>
+                                    </div>
+                <div class="comments-con js-comments-con" id="coments_con">
+                </div>
+
+                
+            </div>
+            
+            
+            
+
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-jiaQun-new hide" id="modal-jiaQun">
+    <div class="inner" style="">
+        <div class="modal-close js-close-jiaQun">
+            <i class="imv2-close"></i>
+        </div>
+        <div class="content">
+            <img src="https://img4.mukewang.com/5d5a70f40001363505400600.jpg">
+            <div class="right-info">
+                <div class="title">
+                    扫码加入慕课前端核心用户群
+                </div>
+                <div class="desc">
+                                            <p class="mb6">验证信息：<span id="joincode">1907081656554219</span><span class="copy js-copy-joincode">复制</span></p>
+                                        <p class="mb6">QQ讨论群号：722466314</p>
+                                            <p>QQ群URL：<a href="https://jq.qq.com/?_wv=1027&amp;k=5l9EFfc" target="_blank">点击访问</a></p>
+                                    </div>
+            </div>
+            <p class="tip">若遇到搜索不到QQ群或加群失败，请联系客服邮箱:kf@imooc.com</p>
+        </div>
+    </div>
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>

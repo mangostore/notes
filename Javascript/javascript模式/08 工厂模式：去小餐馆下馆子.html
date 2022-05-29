@@ -1,0 +1,376 @@
+<html><head><meta charset="utf-8"><title>08 工厂模式：去小餐馆下馆子-慕课专栏</title>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+			<meta name="renderer" content="webkit">
+			<meta property="qc:admins" content="77103107776157736375">
+			<meta property="wb:webmaster" content="c4f857219bfae3cb">
+			<meta http-equiv="Access-Control-Allow-Origin" content="*">
+			<meta http-equiv="Cache-Control" content="no-transform ">
+			<meta http-equiv="Cache-Control" content="no-siteapp">
+			<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+			<link href="https://moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="https://www.imooc.com/static/moco/v1.0/dist/css/moco.min.css?t=201907021539" type="text/css">
+			<link rel="stylesheet" href="https://www.imooc.com/static/lib/swiper/swiper-3.4.2.min.css?t=201907021539">
+			<link rel="stylesheet" href="https://static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,column/zhuanlanChapter-less.css?t=2.5,course/inc/course_tipoff-less.css?t=2.5?v=201907051055" type="text/css">
+			<link charset="utf-8" rel="stylesheet" href="https://www.imooc.com/static/lib/ueditor/themes/imooc/css/ueditor.css?v=201907021539"><link rel="stylesheet" href="https://www.imooc.com/static/lib/baiduShare/api/css/share_style0_16.css?v=6aba13f0.css"></head>
+			<body><div id="main">
+
+<div class="container clearfix" id="top" style="display: block; width: 1134px;">
+    
+    <div class="center_con js-center_con l" style="width: 1134px;">
+        <div class="article-con">
+                            <!-- 买过的阅读 -->
+                <div class="map">
+                    <a href="/read" target="_blank"><i class="imv2-feather-o"></i></a>
+                    <a href="/read/38" target="_blank">JavaScript 设计模式精讲</a>
+                    <a href="" target="_blank">
+                        <span>
+                            / 2-2 08 工厂模式：去小餐馆下馆子
+                        </span>
+                    </a>
+                </div>
+
+            
+
+
+            <div class="art-title" style="margin-top: 0px;">
+                08 工厂模式：去小餐馆下馆子
+            </div>
+            <div class="art-info">
+                
+                <span>
+                    更新时间：2019-07-01 12:08:02
+                </span>
+            </div>
+            <div class="art-top">
+                                <img src="https://img4.mukewang.com/5d11dbf300016bb606400359.jpg" alt="">
+                                                <div class="famous-word-box">
+                    <img src="https://www.imooc.com/static/img/column/bg-l.png" alt="" class="bg1 bg">
+                    <img src="https://www.imooc.com/static/img/column/bg-r.png" alt="" class="bg2 bg">
+                    <div class="famous-word">虚心使人进步，骄傲使人落后。<p class="author">——毛泽东</p></div>
+                </div>
+                            </div>
+            <div class="art-content js-lookimg">
+                <div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>工厂模式</strong> （Factory Pattern），根据不同的输入返回不同类的实例，一般用来创建同一类对象。工厂方式的主要思想是<strong>将对象的创建与对象的实现分离</strong>。</p>
+</div><div class="cl-preview-section"><blockquote>
+<p style="font-size: 20px; line-height: 38px;"><strong>注意：</strong> 本文用到 ES6 的语法 <a href="http://es6.ruanyifeng.com/#docs/let">let/const</a> 、<a href="http://es6.ruanyifeng.com/#docs/class">Class</a>、<a href="http://es6.ruanyifeng.com/#docs/destructuring">变量的解构赋值</a> 等，如果还没接触过可以点击链接稍加学习 ~</p>
+</blockquote>
+</div><div class="cl-preview-section"><h2 id="你曾见过的工厂模式" style="font-size: 30px;">1. 你曾见过的工厂模式</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">今天你的老同学找你来玩，你决定下个馆子（因为不会做饭），于是你来到了小区门口的饭店，跟老板说，来一份鱼香肉丝，一份宫保鸡丁。等会儿菜就烧好端到你的面前，不用管菜烧出来的过程，你只要负责吃就行了。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="http://img.mukewang.com/5d19684200015a0607220216.png" alt="图片描述" data-original="http://img.mukewang.com/5d19684200015a0607220216.png" class="" style="cursor: pointer;"><br>
+上面这两个例子都是工厂模式的实例，老板相当于工厂，负责生产产品，访问者通过老板就可以拿到想要的产品。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">在类似场景中，这些例子有以下特点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">访问者只需要知道产品名，就可以从工厂获得对应实例；</li>
+<li style="font-size: 20px; line-height: 38px;">访问者不关心实例创建过程；</li>
+</ol>
+</div><div class="cl-preview-section"><h2 id="实例的代码实现" style="font-size: 30px;">2. 实例的代码实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果你使用过 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/createElement">document.createElement</a> 方法创建过 DOM 元素，那么你已经使用过工厂方法了，虽然这个方法实际上很复杂，但其使用的就是工厂方法的思想：访问者只需提供标签名（如 div、img），那么这个方法就会返回对应的 DOM 元素。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们可以使用 JavaScript 将上面饭馆例子实现一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 饭店方法 */</span>
+<span class="token keyword">function</span> <span class="token function">restaurant</span><span class="token punctuation">(</span>menu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span>menu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token string">'鱼香肉丝'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">YuXiangRouSi</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">case</span> <span class="token string">'宫保鸡丁'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GongBaoJiDin</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">default</span><span class="token punctuation">:</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'这个菜本店没有 -。-'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 鱼香肉丝类 */</span>
+<span class="token keyword">function</span> <span class="token function">YuXiangRouSi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'鱼香肉丝'</span> <span class="token punctuation">}</span>
+
+YuXiangRouSi<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">eat</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">+</span> <span class="token string">' 真香~'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 宫保鸡丁类 */</span>
+<span class="token keyword">function</span> <span class="token function">GongBaoJiDin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'宫保鸡丁'</span> <span class="token punctuation">}</span>
+
+GongBaoJiDin<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">eat</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">+</span> <span class="token string">' 让我想起了外婆做的菜~'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> dish1 <span class="token operator">=</span> <span class="token function">restaurant</span><span class="token punctuation">(</span><span class="token string">'鱼香肉丝'</span><span class="token punctuation">)</span>
+dish1<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>													<span class="token comment">// 输出: 鱼香肉丝 真香~</span>
+<span class="token keyword">const</span> dish2 <span class="token operator">=</span> <span class="token function">restaurant</span><span class="token punctuation">(</span><span class="token string">'红烧排骨'</span><span class="token punctuation">)</span> <span class="token comment">// 输出: Error 这个菜本店没有 -。-</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">工厂方法中这里使用 <code>switch-case</code> 语法，你也可以用 <code>if-else</code>，都可以。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">下面使用 ES6 的 class 语法改写一下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 饭店方法 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Restaurant</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token function">getMenu</span><span class="token punctuation">(</span>menu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>menu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'鱼香肉丝'</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">YuXiangRouSi</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">case</span> <span class="token string">'宫保鸡丁'</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GongBaoJiDin</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'这个菜本店没有 -。-'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 鱼香肉丝类 */</span>
+<span class="token keyword">class</span> <span class="token class-name">YuXiangRouSi</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'鱼香肉丝'</span> <span class="token punctuation">}</span>
+    
+    <span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">+</span> <span class="token string">' 真香~'</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 宫保鸡丁类 */</span>
+<span class="token keyword">class</span> <span class="token class-name">GongBaoJiDin</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'宫保鸡丁'</span> <span class="token punctuation">}</span>
+    
+    <span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">+</span> <span class="token string">' 让我想起了外婆做的菜~'</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> dish1 <span class="token operator">=</span> Restaurant<span class="token punctuation">.</span><span class="token function">getMenu</span><span class="token punctuation">(</span><span class="token string">'鱼香肉丝'</span><span class="token punctuation">)</span>
+dish1<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>													 				 <span class="token comment">// 输出: 鱼香肉丝 真香~</span>
+<span class="token keyword">const</span> dish2 <span class="token operator">=</span> Restaurant<span class="token punctuation">.</span><span class="token function">getMenu</span><span class="token punctuation">(</span><span class="token string">'红烧排骨'</span><span class="token punctuation">)</span>	<span class="token comment">// 输出: Error 这个菜本店没有 -。-</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这样就完成了一个工厂模式，但是这个实现有一个问题：工厂方法中包含了很多与创建产品相关的过程，如果产品种类很多的话，这个工厂方法中就会罗列很多产品的创建逻辑，每次新增或删除产品种类，不仅要增加产品类，还需要对应修改在工厂方法，违反了开闭原则，也导致这个工厂方法变得臃肿、高耦合。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">严格上这种实现在面向对象语言中叫做<strong>简单工厂模式</strong>。适用于产品种类比较少，创建逻辑不复杂的时候使用。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><strong>工厂模式</strong>的本意是将实际创建对象的过程推迟到子类中，一般用抽象类来作为父类，创建过程由抽象类的子类来具体实现。JavaScript 中没有抽象类，所以我们可以简单地将工厂模式看做是一个实例化对象的工厂类即可。关于抽象类的有关内容，可以参看抽象工厂模式。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">然而作为灵活的 JavaScript，我们不必如此较真，可以把易变的参数提取出来：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 饭店方法 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Restaurant</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>menuData <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 创建菜品 */</span>
+    <span class="token function">getMenu</span><span class="token punctuation">(</span>menu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>menuData<span class="token punctuation">[</span>menu<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'这个菜本店没有 -。-'</span><span class="token punctuation">)</span>
+        <span class="token keyword">const</span> <span class="token punctuation">{</span> type<span class="token punctuation">,</span> message <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>menuData<span class="token punctuation">[</span>menu<span class="token punctuation">]</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Menu</span><span class="token punctuation">(</span>type<span class="token punctuation">,</span> message<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 增加菜品种类 */</span>
+    <span class="token function">addMenu</span><span class="token punctuation">(</span>menu<span class="token punctuation">,</span> type<span class="token punctuation">,</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>menuData<span class="token punctuation">[</span>menu<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            console<span class="token punctuation">.</span><span class="token function">Info</span><span class="token punctuation">(</span><span class="token string">'已经有这个菜了!'</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>menuData<span class="token punctuation">[</span>menu<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span> type<span class="token punctuation">,</span> message <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">/* 移除菜品 */</span>
+    <span class="token function">removeMenu</span><span class="token punctuation">(</span>menu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>menuData<span class="token punctuation">[</span>menu<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">return</span>
+        <span class="token keyword">delete</span> <span class="token keyword">this</span><span class="token punctuation">.</span>menuData<span class="token punctuation">[</span>menu<span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 菜品类 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Menu</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>type<span class="token punctuation">,</span> message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> type
+        <span class="token keyword">this</span><span class="token punctuation">.</span>message <span class="token operator">=</span> message
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> restaurant <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Restaurant</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+restaurant<span class="token punctuation">.</span><span class="token function">addMenu</span><span class="token punctuation">(</span><span class="token string">'YuXiangRouSi'</span><span class="token punctuation">,</span> <span class="token string">'鱼香肉丝'</span><span class="token punctuation">,</span> <span class="token string">' 真香~'</span><span class="token punctuation">)</span>			<span class="token comment">// 注册菜品</span>
+restaurant<span class="token punctuation">.</span><span class="token function">addMenu</span><span class="token punctuation">(</span><span class="token string">'GongBaoJiDin'</span><span class="token punctuation">,</span> <span class="token string">'宫保鸡丁'</span><span class="token punctuation">,</span> <span class="token string">' 让我想起了外婆做的菜~'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> dish1 <span class="token operator">=</span> restaurant<span class="token punctuation">.</span><span class="token function">getMenu</span><span class="token punctuation">(</span><span class="token string">'YuXiangRouSi'</span><span class="token punctuation">)</span>
+dish1<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>																				<span class="token comment">// 输出: 鱼香肉丝 真香~</span>
+<span class="token keyword">const</span> dish2 <span class="token operator">=</span> restaurant<span class="token punctuation">.</span><span class="token function">getMenu</span><span class="token punctuation">(</span><span class="token string">'HongSaoPaiGu'</span><span class="token punctuation">)</span>	<span class="token comment">// 输出: Error 这个菜本店没有 -。-</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">我们还给 <code>Restaurant</code> 类增加了 <code>addMenu/removeMenu</code> 私有方法，以便于扩展。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">当然这里如果菜品参数不太一致，可以在 <code>addMenu</code> 时候注册构造函数或者类，创建的时候返回 <code>new</code> 出的对应类实例，灵活变通即可。</p>
+</div><div class="cl-preview-section"><h2 id="工厂模式的通用实现" style="font-size: 30px;">3. 工厂模式的通用实现</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">根据上面的例子我们可以提炼一下工厂模式，饭店可以被认为是工厂类（Factory），菜品是产品（Product），如果我们希望获得菜品实例，通过工厂类就可以拿到产品实例，不用关注产品实例创建流程。主要有下面几个概念：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>Factory</strong> ：工厂，负责返回产品实例；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>Product</strong> ：产品，访问者从工厂拿到产品实例；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">结构大概如下：</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><img src="http://img.mukewang.com/5d19687c000173fc08340380.png" alt="图片描述" data-original="http://img.mukewang.com/5d19687c000173fc08340380.png" class="" style="cursor: pointer;"><br>
+下面用通用的方法实现，这里直接用 class 语法：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">/* 工厂类 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Factory</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token function">getInstance</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">'Product1'</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Product1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">case</span> <span class="token string">'Product2'</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Product2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'当前没有这个产品'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 产品类1 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Product1</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'Product1'</span> <span class="token punctuation">}</span>
+    
+    <span class="token function">operate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 产品类2 */</span>
+<span class="token keyword">class</span> <span class="token class-name">Product2</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">this</span><span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'Product2'</span> <span class="token punctuation">}</span>
+    
+    <span class="token function">operate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> prod1 <span class="token operator">=</span> Factory<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">'Product1'</span><span class="token punctuation">)</span>
+prod1<span class="token punctuation">.</span><span class="token function">operate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>																	<span class="token comment">// 输出: Product1</span>
+<span class="token keyword">const</span> prod2 <span class="token operator">=</span> Factory<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">'Product3'</span><span class="token punctuation">)</span>		<span class="token comment">// 输出: Error 当前没有这个产品</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">上一个小节介绍的灵活方式也有实用价值，读者可以参考一下。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">注意，由于 JavaScript 的灵活，简单工厂模式返回的产品对象不一定非要是类实例，也可以是字面量形式的对象，所以读者可以根据场景灵活选择返回的产品对象形式。</p>
+</div><div class="cl-preview-section"><h2 id="源码中的工厂模式" style="font-size: 30px;">4. 源码中的工厂模式</h2>
+</div><div class="cl-preview-section"><h3 id="vuereact-源码中的工厂模式">4.1 Vue/React 源码中的工厂模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">和原生的 <code>document.createElement</code> 类似，Vue 和 React 这种具有虚拟 DOM 树（Virtual Dom Tree）机制的框架在生成虚拟 DOM 的时候，都提供了 <code>createElement</code> 方法用来生成 VNode，用来作为真实 DOM 节点的映射：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// Vue</span>
+<span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'h3'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token keyword">class</span><span class="token punctuation">:</span> <span class="token string">'main-title'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+    <span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'img'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token keyword">class</span><span class="token punctuation">:</span> <span class="token string">'avatar'</span><span class="token punctuation">,</span> attrs<span class="token punctuation">:</span> <span class="token punctuation">{</span> src<span class="token punctuation">:</span> <span class="token string">'../avatar.jpg'</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token keyword">class</span><span class="token punctuation">:</span> <span class="token string">'user-desc'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">'长得帅老的快，长得丑活得久'</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment">// React</span>
+React<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'h3'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> className<span class="token punctuation">:</span> <span class="token string">'user-info'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  React<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'img'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> src<span class="token punctuation">:</span> <span class="token string">'../avatar.jpg'</span><span class="token punctuation">,</span> className<span class="token punctuation">:</span> <span class="token string">'avatar'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  React<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> className<span class="token punctuation">:</span> <span class="token string">'user-desc'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">'长得帅老的快，长得丑活得久'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;"><code>createElement</code> 函数结构大概如下：</p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token keyword">class</span> <span class="token class-name">Vnode</span> <span class="token punctuation">(</span>tag<span class="token punctuation">,</span> data<span class="token punctuation">,</span> children<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">createElement</span><span class="token punctuation">(</span>tag<span class="token punctuation">,</span> data<span class="token punctuation">,</span> children<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  	<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Vnode</span><span class="token punctuation">(</span>tag<span class="token punctuation">,</span> data<span class="token punctuation">,</span> children<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">可以看到 <code>createElement</code> 函数内会进行 VNode 的具体创建，创建的过程是很复杂的，而框架提供的 <code>createElement</code> 工厂方法封装了复杂的创建与验证过程，对于使用者来说就很方便了。</p>
+</div><div class="cl-preview-section"><h3 id="vue-router-源码中的工厂模式">4.2 vue-router 源码中的工厂模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">工厂模式在源码中应用频繁，以 vue-router 中的源码为例，代码位置：<a href="https://github.com/vuejs/vue-router/blob/v3.0.6/src/index.js">vue-router/src/index.js</a></p>
+</div><div class="cl-preview-section"><pre class="  language-javascript"><code class="prism  language-javascript"><span class="token comment">// src/index.js</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">VueRouter</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>mode <span class="token operator">=</span> mode	<span class="token comment">// 路由模式</span>
+        
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>mode<span class="token punctuation">)</span> <span class="token punctuation">{</span>           <span class="token comment">// 简单工厂</span>
+            <span class="token keyword">case</span> <span class="token string">'history'</span><span class="token punctuation">:</span>       <span class="token comment">// history 方式</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>history <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HTML5History</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> options<span class="token punctuation">.</span>base<span class="token punctuation">)</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'hash'</span><span class="token punctuation">:</span>          <span class="token comment">// hash 方式</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>history <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashHistory</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> options<span class="token punctuation">.</span>base<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fallback<span class="token punctuation">)</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">case</span> <span class="token string">'abstract'</span><span class="token punctuation">:</span>      <span class="token comment">// abstract 方式</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>history <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbstractHistory</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> options<span class="token punctuation">.</span>base<span class="token punctuation">)</span>
+                <span class="token keyword">break</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token comment">// ... 初始化失败报错</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">稍微解释一下这里的源码。<code>mode</code> 是路由创建的模式，这里有三种 History、Hash、Abstract，前两种我们已经很熟悉了，History 是 H5 的路由方式，Hash 是路由中带 <code>#</code> 的路由方式，Abstract 代表非浏览器环境中路由方式，比如 Node、weex 等；<code>this.history</code> 用来保存路由实例，vue-router 中使用了工厂模式的思想来获得响应路由控制类的实例。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">源码里没有把工厂方法的产品创建流程封装出来，而是直接将产品实例的创建流程暴露在 <code>VueRouter</code> 的构造函数中，在被 <code>new</code> 的时候创建对应产品实例，相当于 <code>VueRouter</code> 的构造函数就是一个工厂方法。</p>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">如果一个系统不是 SPA （Single Page Application，单页应用），而是是 MPA（Multi Page Application，多页应用），那么就需要创建多个 <code>VueRouter</code> 的实例，此时 <code>VueRouter</code> 的构造函数也就是工厂方法将会被多次执行，以分别获得不同实例。</p>
+</div><div class="cl-preview-section"><h2 id="工厂模式的优缺点" style="font-size: 30px;">5. 工厂模式的优缺点</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">工厂模式将<strong>对象的创建和实现分离</strong>，这带来了优点：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">良好的封装，代码结构清晰，<strong>访问者无需知道对象的创建流程</strong>，特别是创建比较复杂的情况下；</li>
+<li style="font-size: 20px; line-height: 38px;">扩展性优良，通过工厂方法隔离了用户和创建流程隔离，<strong>符合开放封闭原则</strong>；</li>
+<li style="font-size: 20px; line-height: 38px;">解耦了高层逻辑和底层产品类，<strong>符合最少知识原则</strong>，不需要的就不要去交流；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">工厂模式的缺点：带来了<strong>额外的系统复杂度</strong>，增加了抽象性；</p>
+</div><div class="cl-preview-section"><h2 id="工厂模式的使用场景" style="font-size: 30px;">6. 工厂模式的使用场景</h2>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">那么什么时候使用工厂模式呢：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;">对象的创建比较复杂，而访问者无需知道创建的具体流程；</li>
+<li style="font-size: 20px; line-height: 38px;">处理大量具有相同属性的小对象；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">什么时候不该用工厂模式：滥用只是增加了不必要的系统复杂度，过犹不及。</p>
+</div><div class="cl-preview-section"><h2 id="其他相关模式" style="font-size: 30px;">7. 其他相关模式</h2>
+</div><div class="cl-preview-section"><h3 id="工厂模式与抽象工厂模式">7.1 工厂模式与抽象工厂模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这两个方式可以组合使用，具体联系与区别在抽象工厂模式中讨论。</p>
+</div><div class="cl-preview-section"><h3 id="工厂模式与模板方法模式">7.2 工厂模式与模板方法模式</h3>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这两个模式看起来比较类似，不过主要区别是：</p>
+</div><div class="cl-preview-section"><ol>
+<li style="font-size: 20px; line-height: 38px;"><strong>工厂模式</strong> 主要关注产品实例的创建，对创建流程封闭起来；</li>
+<li style="font-size: 20px; line-height: 38px;"><strong>模板方法模式</strong> 主要专注的是为固定的算法骨架提供某些步骤的实现；</li>
+</ol>
+</div><div class="cl-preview-section"><p style="font-size: 20px; line-height: 38px;">这两个模式也可以组合一起来使用，比如在模板方法模式里面，使用工厂方法来创建模板方法需要的对象。</p>
+</div></div>
+            </div>
+                            <!-- 买过的阅读 -->
+                <div class="art-next-prev clearfix">
+                                                                        <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/481">
+                                                    <div class="prev l clearfix">
+                                <div class="icon l">
+                                    <i class="imv2-arrow3_l"></i>
+                                </div>
+                                <p>
+                                    07 单例模式：游戏的存档
+                                </p>
+                            </div>
+                        </a>
+                                                                                            <!-- 已买且开放 或者可以试读 -->
+                            <a href="/read/38/article/483">
+                                                    <div class="next r clearfix">
+                                <p>
+                                    09 抽象工厂模式：又去小餐馆下馆子
+                                </p>
+                                <div class="icon r">
+                                    <i class="imv2-arrow3_r"></i>
+                                </div>
+
+                            </div>
+                        </a>
+                                    </div>
+                    </div>
+        <div class="comments-con js-comments-con" id="coments_con">
+        </div>
+
+
+
+    </div>
+    
+    
+    
+
+</div>
+ 
+<!-- 专栏介绍页专栏评价 -->
+
+<!-- 专栏介绍页底部三条评价 -->
+
+<!-- 专栏阅读页弹层目录和介绍页页面目录 -->
+
+<!-- 专栏阅读页发布回复 -->
+
+<!-- 专栏阅读页发布评论 -->
+
+<!-- 专栏阅读页底部评论 -->
+
+<!-- 专栏阅读 单个 评论 -->
+
+<!-- 新增回复和展开三条以外回复 -->
+
+<!-- 立即订阅的弹窗 -->
+
+
+
+
+
+
+
+
+
+
+
+
+</div></body></html>
